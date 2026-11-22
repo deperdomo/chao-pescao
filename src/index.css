@@ -200,7 +200,7 @@
     @apply size-4 shrink-0 rounded-full border-[1.5px] border-dashed border-white/40;
   }
   .token.on {
-    @apply border-0 bg-[radial-gradient(circle_at_35%_30%,#fff1c2,#e2b54f_55%,#8f6a12)] shadow-[0_2px_3px_#0008];
+    @apply bg-oro border-solid border-[#a77c00] shadow-[0_2px_3px_#0008];
   }
 }
 
