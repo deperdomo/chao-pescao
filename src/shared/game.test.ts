@@ -14,7 +14,7 @@ function playing(n = 4) {
   const room = G.newRoom('ABC123', 'p0', 't0', 'Jugador 0');
   for (let i = 1; i < n; i++) G.addPlayer(room, `p${i}`, `t${i}`, `Jugador ${i}`);
   for (const p of room.players) p.connected = true;
-  assert.equal(G.startGame(room, 'p0', DECK, first), undefined);
+  assert.equal(G.startGame(room, 'p0', 2, DECK, first), undefined);
   return room;
 }
 
@@ -103,11 +103,13 @@ test('seguir sin esperar: sin la verdad, otra pregunta; con verdad y una trola, 
   assert.equal(G.viewFor(room, 'p0').answers.length, 2);
 });
 
-test('la verdad le toca a alguien conectado; la partida acaba cuando todos han leído dos veces', () => {
+test('la verdad le toca a alguien conectado; la partida acaba cuando todos han leído las vueltas elegidas', () => {
   const room = playing(3);
   room.players[1].connected = false;
   G.abort(room, 'p0');
-  G.startGame(room, 'p0', DECK, first);
+  assert.equal(G.startGame(room, 'p0', 4, DECK, first), 'Elige cuántas vueltas');
+  assert.equal(G.startGame(room, 'p0', '2', DECK, first), 'Elige cuántas vueltas');
+  G.startGame(room, 'p0', 2, DECK, first);
   assert.equal(room.truthId, 'p2');
   assert.equal(G.viewFor(room, 'p0').total, 6);
   for (let r = 1; r <= 6; r++) {
@@ -118,4 +120,6 @@ test('la verdad le toca a alguien conectado; la partida acaba cuando todos han l
   }
   assert.equal(room.phase, 'lobby');
   assert.equal(G.canJoin(room, 'Nuevo'), undefined); // se puede entrar para la siguiente
+  G.startGame(room, 'p0', 1, DECK, first);
+  assert.equal(G.viewFor(room, 'p0').total, 3); // una vuelta: cada uno lee una vez
 });

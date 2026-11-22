@@ -1,7 +1,8 @@
 // Sala de espera: código para compartir y jugadores. Tras una partida, muestra la clasificación.
 import { useState } from 'react';
 import { Check, Crown, Share2, WifiOff, X } from 'lucide-react';
-import { MAX_PLAYERS, MIN_PLAYERS, type View } from '../shared/game';
+import { LAP_CHOICES, MAX_PLAYERS, MIN_PLAYERS, type View } from '../shared/game';
+import { store } from './session';
 import type { RoomConn } from './useRoom';
 
 interface Props {
@@ -12,6 +13,11 @@ interface Props {
 
 export default function Lobby({ room, view, onLeave }: Props) {
   const [copied, setCopied] = useState(false);
+  const [laps, setLaps] = useState(() => LAP_CHOICES.find((n) => String(n) === store.get('laps')) ?? 2); // se recuerda para la próxima partida
+  const pickLaps = (n: number) => {
+    setLaps(n);
+    store.set('laps', String(n));
+  };
   const host = view.players.find((p) => p.id === view.hostId);
   const isHost = view.you === view.hostId;
   const missing = MIN_PLAYERS - view.players.length;
@@ -78,7 +84,22 @@ export default function Lobby({ room, view, onLeave }: Props) {
       <footer className="mt-auto flex flex-col gap-2 pb-[max(0.5rem,env(safe-area-inset-bottom))]">
         {isHost ? (
           <>
-            <button className="btn btn-accent w-full" onClick={() => room.send({ t: 'start' })} disabled={missing > 0}>
+            <div className="card">
+              <p id="laps-title" className="label">
+                Vueltas: cuántas veces lee cada jugador
+              </p>
+              <div className="grid grid-cols-3 gap-2" role="radiogroup" aria-labelledby="laps-title">
+                {LAP_CHOICES.map((n) => (
+                  <button key={n} role="radio" aria-checked={laps === n} className={`btn ${laps === n ? 'btn-primary' : 'btn-ghost'}`} onClick={() => pickLaps(n)}>
+                    {n}
+                  </button>
+                ))}
+              </div>
+              <p className="text-muted mt-2 text-sm" role="status">
+                Con {view.players.length} jugadores: {view.players.length * laps} rondas.
+              </p>
+            </div>
+            <button className="btn btn-accent w-full" onClick={() => room.send({ t: 'start', laps })} disabled={missing > 0}>
               {hasScores ? 'Jugar otra partida' : 'Empezar partida'}
             </button>
             {missing > 0 && (

@@ -2,7 +2,7 @@
 
 ## Reglas
 
-- De 3 a 12 jugadores, cada uno con su móvil. El anfitrión crea la sala y comparte el código o el enlace.
+- De 3 a 15 jugadores, cada uno con su móvil. El anfitrión crea la sala y comparte el código o el enlace.
 - En cada ronda hay un **lector**, que lee en voz alta una pregunta rara sin saber la respuesta.
 - Los demás ven la respuesta real y una carta secreta: a uno le toca **verdad** (la escribe con sus palabras) y
   al resto **trola** (se inventan una respuesta creíble). La verdad le toca a alguien conectado si lo hay.
@@ -13,7 +13,9 @@
   - Puede **plantarse** cuando quiera y se queda lo que lleva.
   - Si caza todas las trolas, la ronda termina sola con todos los puntos.
 - Solo puntúa el lector. Lee el siguiente jugador en el orden de la sala.
-- Cada jugador lee **dos veces** (`LAPS`). Al final, la clasificación queda en la sala de espera y el anfitrión
+- Cada jugador lee **1, 2 o 3 veces** (`LAP_CHOICES`): lo elige el anfitrión en la sala de espera antes de
+  empezar (2 por defecto; el móvil recuerda la última elección). Con muchos jugadores conviene 1 vuelta: con 15
+  jugadores y 2 vueltas salen 30 rondas. Al final, la clasificación queda en la sala de espera y el anfitrión
   puede empezar otra partida (los puntos vuelven a 0).
 - Para no atascarse:
   - El anfitrión puede **seguir sin esperar** a quien no escribe. Si ya están la verdad y al menos una trola,
@@ -23,7 +25,7 @@
 - Solo se puede entrar, salir o expulsar a alguien en la sala de espera. Si el anfitrión cierra la sala, se
   cierra para todos.
 
-Las constantes (`MIN_PLAYERS`, `MAX_PLAYERS`, `LAPS`, `ANSWER_MAX`…) están al principio de
+Las constantes (`MIN_PLAYERS`, `MAX_PLAYERS`, `LAP_CHOICES`, `ANSWER_MAX`…) están al principio de
 `src/shared/game.ts`.
 
 ## Arquitectura
@@ -70,7 +72,7 @@ config de assets del plugin de Cloudflare en `vite.config.ts`.
 
 ### Mensajes
 
-Del cliente al servidor (JSON por el WebSocket): `start`, `write {text}`, `skip`, `discard {id}`, `stop`,
+Del cliente al servidor (JSON por el WebSocket): `start {laps}`, `write {text}`, `skip`, `discard {id}`, `stop`,
 `next`, `abort`, `kick {id}` y `leave`.
 
 Del servidor al cliente: `state` (la vista completa de ese jugador), `toast` (un error para mostrar) y

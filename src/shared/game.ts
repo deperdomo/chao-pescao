@@ -7,8 +7,8 @@
 // +1 por cada trola cazada. Puede plantarse cuando quiera; si descarta la verdad, pierde los puntos de la ronda.
 
 export const MIN_PLAYERS = 3; // lector + verdad + al menos una trola
-export const MAX_PLAYERS = 12;
-export const LAPS = 2; // veces que lee cada jugador en una partida
+export const MAX_PLAYERS = 15;
+export const LAP_CHOICES = [1, 2, 3]; // vueltas: veces que lee cada jugador. Lo elige el anfitrión al empezar
 export const NAME_MAX = 20;
 export const ANSWER_MAX = 80;
 
@@ -29,6 +29,7 @@ export interface Room {
   players: Player[]; // orden de asiento (y de lectura)
   phase: Phase;
   round: number;
+  laps: number;
   readerId: string;
   truthId: string;
   question: string;
@@ -74,7 +75,7 @@ const cleanText = (v: unknown, max: number) => {
 };
 
 export function newRoom(code: string, hostId: string, hostToken: string, hostName: string): Room {
-  const room: Room = { code, hostId, players: [], phase: 'lobby', round: 0, readerId: hostId, used: [], ...roundReset() };
+  const room: Room = { code, hostId, players: [], phase: 'lobby', round: 0, laps: 2, readerId: hostId, used: [], ...roundReset() };
   addPlayer(room, hostId, hostToken, hostName);
   return room;
 }
@@ -99,7 +100,7 @@ export function removePlayer(room: Room, id: string): string | undefined {
   room.players = room.players.filter((p) => p.id !== id);
 }
 
-export const totalRounds = (room: Room) => room.players.length * LAPS;
+export const totalRounds = (room: Room) => room.players.length * room.laps;
 const writersOf = (room: Room) => room.players.filter((p) => p.id !== room.readerId);
 
 /** Nueva pregunta para el lector actual. La verdad le toca a alguien conectado si lo hay. */
@@ -117,10 +118,12 @@ function deal(room: Room, deck: Deck, rand: () => number) {
   room.phase = 'writing';
 }
 
-export function startGame(room: Room, by: string, deck: Deck, rand: () => number): string | undefined {
+export function startGame(room: Room, by: string, laps: unknown, deck: Deck, rand: () => number): string | undefined {
   if (by !== room.hostId) return 'Solo el anfitrión puede empezar';
   if (room.phase !== 'lobby') return 'La partida ya ha empezado';
   if (room.players.length < MIN_PLAYERS) return `Hacen falta al menos ${MIN_PLAYERS} jugadores`;
+  if (typeof laps !== 'number' || !LAP_CHOICES.includes(laps)) return 'Elige cuántas vueltas';
+  room.laps = laps;
   for (const p of room.players) p.score = 0;
   room.round = 1;
   room.readerId = room.players[Math.floor(rand() * room.players.length)].id;

@@ -104,7 +104,7 @@ export class Room extends Server<Env> {
     let error: string | undefined;
     switch (m.t) {
       case 'start':
-        error = G.startGame(room, pid, QUESTIONS, random);
+        error = G.startGame(room, pid, m.laps, QUESTIONS, random);
         break;
       case 'write':
         error = G.write(room, pid, m.text);

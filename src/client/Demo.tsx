@@ -36,7 +36,7 @@ function build(scene: Scene): G.Room {
   NAMES.slice(1).forEach((name, i) => G.addPlayer(room, `p${i + 1}`, '', name));
   for (const p of room.players) p.connected = true;
   if (scene === 'Sala de espera') return room;
-  G.startGame(room, 'p0', DECK, () => 0);
+  G.startGame(room, 'p0', 2, DECK, () => 0);
   const write = (ids: string[]) => ids.forEach((id) => G.write(room, id, botAnswer(room, id)));
   if (scene === 'Escribiendo') {
     write(['p1', 'p2']);
@@ -100,7 +100,7 @@ export default function Demo() {
       let error: string | undefined;
       switch (m.t) {
         case 'start':
-          error = G.startGame(room, me, DECK, Math.random);
+          error = G.startGame(room, me, m.laps, DECK, Math.random);
           break;
         case 'write':
           error = G.write(room, me, m.text);
