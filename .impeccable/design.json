@@ -1,0 +1,424 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-22T16:28:55.868Z",
+  "title": "Design System: Trola",
+  "extensions": {
+    "colorMeta": {
+      "felt": {
+        "role": "neutral",
+        "displayName": "Tapete",
+        "canonical": "#0f3d30",
+        "tonalRamp": [
+          "oklch(15.0% 0.026 170.5)",
+          "oklch(26.0% 0.045 170.5)",
+          "oklch(37.0% 0.055 170.5)",
+          "oklch(48.0% 0.055 170.5)",
+          "oklch(59.0% 0.055 170.5)",
+          "oklch(70.0% 0.052 170.5)",
+          "oklch(82.0% 0.031 170.5)",
+          "oklch(95.0% 0.009 170.5)"
+        ]
+      },
+      "well": {
+        "role": "neutral",
+        "displayName": "Hueco del tapete",
+        "canonical": "#0a2f24",
+        "tonalRamp": [
+          "oklch(15.0% 0.022 169.6)",
+          "oklch(26.0% 0.039 169.6)",
+          "oklch(37.0% 0.046 169.6)",
+          "oklch(48.0% 0.046 169.6)",
+          "oklch(59.0% 0.046 169.6)",
+          "oklch(70.0% 0.045 169.6)",
+          "oklch(82.0% 0.027 169.6)",
+          "oklch(95.0% 0.007 169.6)"
+        ]
+      },
+      "naipe": {
+        "role": "neutral",
+        "displayName": "Naipe",
+        "canonical": "#fbf8f1",
+        "tonalRamp": [
+          "oklch(15.0% 0.005 87.5)",
+          "oklch(26.0% 0.008 87.5)",
+          "oklch(37.0% 0.010 87.5)",
+          "oklch(48.0% 0.010 87.5)",
+          "oklch(59.0% 0.010 87.5)",
+          "oklch(70.0% 0.009 87.5)",
+          "oklch(82.0% 0.006 87.5)",
+          "oklch(95.0% 0.002 87.5)"
+        ]
+      },
+      "chalk": {
+        "role": "neutral",
+        "displayName": "Tiza",
+        "canonical": "#fdfaf2",
+        "tonalRamp": [
+          "oklch(15.0% 0.005 89.7)",
+          "oklch(26.0% 0.009 89.7)",
+          "oklch(37.0% 0.011 89.7)",
+          "oklch(48.0% 0.011 89.7)",
+          "oklch(59.0% 0.011 89.7)",
+          "oklch(70.0% 0.011 89.7)",
+          "oklch(82.0% 0.006 89.7)",
+          "oklch(95.0% 0.002 89.7)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Tinta",
+        "canonical": "#1f1a12",
+        "tonalRamp": [
+          "oklch(15.0% 0.008 79.3)",
+          "oklch(26.0% 0.014 79.3)",
+          "oklch(37.0% 0.017 79.3)",
+          "oklch(48.0% 0.017 79.3)",
+          "oklch(59.0% 0.017 79.3)",
+          "oklch(70.0% 0.016 79.3)",
+          "oklch(82.0% 0.010 79.3)",
+          "oklch(95.0% 0.003 79.3)"
+        ]
+      },
+      "muted-felt": {
+        "role": "neutral",
+        "displayName": "Musgo",
+        "canonical": "#b9d6c8",
+        "tonalRamp": [
+          "oklch(15.0% 0.017 164.8)",
+          "oklch(26.0% 0.030 164.8)",
+          "oklch(37.0% 0.036 164.8)",
+          "oklch(48.0% 0.036 164.8)",
+          "oklch(59.0% 0.036 164.8)",
+          "oklch(70.0% 0.035 164.8)",
+          "oklch(82.0% 0.021 164.8)",
+          "oklch(95.0% 0.006 164.8)"
+        ]
+      },
+      "muted-naipe": {
+        "role": "neutral",
+        "displayName": "Tinta gastada",
+        "canonical": "#6d6453",
+        "tonalRamp": [
+          "oklch(15.0% 0.014 83.3)",
+          "oklch(26.0% 0.024 83.3)",
+          "oklch(37.0% 0.028 83.3)",
+          "oklch(48.0% 0.028 83.3)",
+          "oklch(59.0% 0.028 83.3)",
+          "oklch(70.0% 0.027 83.3)",
+          "oklch(82.0% 0.016 83.3)",
+          "oklch(95.0% 0.005 83.3)"
+        ]
+      },
+      "oro": {
+        "role": "primary",
+        "displayName": "Oro de la baraja",
+        "canonical": "#f2b705",
+        "tonalRamp": [
+          "oklch(15.0% 0.079 85.0)",
+          "oklch(26.0% 0.138 85.0)",
+          "oklch(37.0% 0.166 85.0)",
+          "oklch(48.0% 0.166 85.0)",
+          "oklch(59.0% 0.166 85.0)",
+          "oklch(70.0% 0.159 85.0)",
+          "oklch(82.0% 0.095 85.0)",
+          "oklch(95.0% 0.026 85.0)"
+        ]
+      },
+      "oro-ink": {
+        "role": "primary",
+        "displayName": "Tinta de oro",
+        "canonical": "#251b00",
+        "tonalRamp": [
+          "oklch(15.0% 0.022 89.6)",
+          "oklch(26.0% 0.039 89.6)",
+          "oklch(37.0% 0.047 89.6)",
+          "oklch(48.0% 0.047 89.6)",
+          "oklch(59.0% 0.047 89.6)",
+          "oklch(70.0% 0.045 89.6)",
+          "oklch(82.0% 0.027 89.6)",
+          "oklch(95.0% 0.007 89.6)"
+        ]
+      },
+      "copas": {
+        "role": "secondary",
+        "displayName": "Rojo de copas",
+        "canonical": "#d7262e",
+        "tonalRamp": [
+          "oklch(15.0% 0.101 25.4)",
+          "oklch(26.0% 0.175 25.4)",
+          "oklch(37.0% 0.210 25.4)",
+          "oklch(48.0% 0.210 25.4)",
+          "oklch(59.0% 0.210 25.4)",
+          "oklch(70.0% 0.202 25.4)",
+          "oklch(82.0% 0.121 25.4)",
+          "oklch(95.0% 0.034 25.4)"
+        ]
+      },
+      "espadas": {
+        "role": "secondary",
+        "displayName": "Azul de espadas",
+        "canonical": "#1d4fa8",
+        "tonalRamp": [
+          "oklch(15.0% 0.074 260.9)",
+          "oklch(26.0% 0.127 260.9)",
+          "oklch(37.0% 0.153 260.9)",
+          "oklch(48.0% 0.153 260.9)",
+          "oklch(59.0% 0.153 260.9)",
+          "oklch(70.0% 0.147 260.9)",
+          "oklch(82.0% 0.088 260.9)",
+          "oklch(95.0% 0.025 260.9)"
+        ]
+      },
+      "bastos": {
+        "role": "secondary",
+        "displayName": "Verde de bastos",
+        "canonical": "#2f8a3c",
+        "tonalRamp": [
+          "oklch(15.0% 0.069 145.8)",
+          "oklch(26.0% 0.119 145.8)",
+          "oklch(37.0% 0.143 145.8)",
+          "oklch(48.0% 0.143 145.8)",
+          "oklch(59.0% 0.143 145.8)",
+          "oklch(70.0% 0.137 145.8)",
+          "oklch(82.0% 0.082 145.8)",
+          "oklch(95.0% 0.023 145.8)"
+        ]
+      },
+      "lie-felt": {
+        "role": "neutral",
+        "displayName": "Trola sobre tapete",
+        "canonical": "#ff8f87",
+        "tonalRamp": [
+          "oklch(15.0% 0.066 25.0)",
+          "oklch(26.0% 0.114 25.0)",
+          "oklch(37.0% 0.137 25.0)",
+          "oklch(48.0% 0.137 25.0)",
+          "oklch(59.0% 0.137 25.0)",
+          "oklch(70.0% 0.131 25.0)",
+          "oklch(82.0% 0.079 25.0)",
+          "oklch(95.0% 0.022 25.0)"
+        ]
+      },
+      "lie-naipe": {
+        "role": "neutral",
+        "displayName": "Trola sobre naipe",
+        "canonical": "#c41f27",
+        "tonalRamp": [
+          "oklch(15.0% 0.095 25.5)",
+          "oklch(26.0% 0.164 25.5)",
+          "oklch(37.0% 0.198 25.5)",
+          "oklch(48.0% 0.198 25.5)",
+          "oklch(59.0% 0.198 25.5)",
+          "oklch(70.0% 0.190 25.5)",
+          "oklch(82.0% 0.114 25.5)",
+          "oklch(95.0% 0.032 25.5)"
+        ]
+      },
+      "truth-felt": {
+        "role": "neutral",
+        "displayName": "Verdad sobre tapete",
+        "canonical": "#7fdc8e",
+        "tonalRamp": [
+          "oklch(15.0% 0.068 147.9)",
+          "oklch(26.0% 0.117 147.9)",
+          "oklch(37.0% 0.141 147.9)",
+          "oklch(48.0% 0.141 147.9)",
+          "oklch(59.0% 0.141 147.9)",
+          "oklch(70.0% 0.135 147.9)",
+          "oklch(82.0% 0.081 147.9)",
+          "oklch(95.0% 0.023 147.9)"
+        ]
+      },
+      "truth-naipe": {
+        "role": "neutral",
+        "displayName": "Verdad sobre naipe",
+        "canonical": "#23752f",
+        "tonalRamp": [
+          "oklch(15.0% 0.063 145.7)",
+          "oklch(26.0% 0.109 145.7)",
+          "oklch(37.0% 0.131 145.7)",
+          "oklch(48.0% 0.131 145.7)",
+          "oklch(59.0% 0.131 145.7)",
+          "oklch(70.0% 0.126 145.7)",
+          "oklch(82.0% 0.075 145.7)",
+          "oklch(95.0% 0.021 145.7)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Solo el nombre «Trola» en la portada."
+      },
+      "headline": {
+        "displayName": "Rótulo",
+        "purpose": "Ronda, titular del resultado, títulos de la portada; también números grandes (puntos, código, vueltas)."
+      },
+      "title": {
+        "displayName": "Pregunta",
+        "purpose": "La pregunta de la ronda dentro de su doble filete."
+      },
+      "body": {
+        "displayName": "Texto",
+        "purpose": "Respuestas, instrucciones y listas."
+      },
+      "label": {
+        "displayName": "Etiqueta",
+        "purpose": "Etiquetas de campos y de secciones, en musgo."
+      }
+    },
+    "shadows": [
+      {
+        "name": "naipe-en-la-mesa",
+        "value": "0 8px 16px -8px #000d",
+        "purpose": "Naipes, botón de oro y botón de naipe."
+      },
+      {
+        "name": "naipe-levantado",
+        "value": "0 0 0 3px #f2b705, 0 16px 24px -10px #000",
+        "purpose": "Respuesta elegida y vuelta seleccionada."
+      },
+      {
+        "name": "carta-del-codigo",
+        "value": "0 6px 10px -4px #000c",
+        "purpose": "Las seis cartas pequeñas del código de sala."
+      },
+      {
+        "name": "aviso",
+        "value": "0 10px 20px -8px #000d",
+        "purpose": "Aviso emergente y panel de la demo."
+      }
+    ],
+    "motion": [
+      {
+        "name": "flip",
+        "value": "0.32s cubic-bezier(0.16, 1, 0.3, 1), rotateY(80deg) → 0",
+        "purpose": "Lo único que se mueve: la carta secreta al darse la vuelta."
+      },
+      {
+        "name": "state",
+        "value": "150ms",
+        "purpose": "Cambios de estado: levantar un naipe, pulsar un botón."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "column",
+        "value": "448px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Botón de oro",
+      "kind": "button",
+      "refersTo": "button-accent",
+      "description": "La acción de ahora: uno por pantalla.",
+      "html": "<button class=\"ds-btn-accent\">Crear sala</button>",
+      "css": ".ds-btn-accent { min-height: 48px; padding: 0 16px; border-radius: 12px; font: 700 17px 'Atkinson Hyperlegible', system-ui, sans-serif; cursor: pointer; transition: background-color .15s, transform .15s; border: 0; background: var(--color-oro, #f2b705); color: var(--color-oro-ink, #251b00); box-shadow: 0 8px 16px -8px #000c; } .ds-btn-accent:hover { background: #ffc61f; } .ds-btn-accent:active { transform: scale(.98); } .ds-btn-accent:focus-visible { outline: 3px solid var(--color-oro, #f2b705); outline-offset: 3px; }"
+    },
+    {
+      "name": "Botón de naipe",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "La alternativa fuerte: Unirse, Plantarme.",
+      "html": "<button class=\"ds-btn-naipe\">Unirse</button>",
+      "css": ".ds-btn-naipe { min-height: 48px; padding: 0 16px; border-radius: 12px; font: 700 17px 'Atkinson Hyperlegible', system-ui, sans-serif; cursor: pointer; transition: background-color .15s, transform .15s; border: 0; background: var(--color-naipe, #fbf8f1); color: var(--color-ink, #1f1a12); box-shadow: 0 8px 16px -8px #000c; } .ds-btn-naipe:hover { background: #fff; } .ds-btn-naipe:active { transform: scale(.98); } .ds-btn-naipe:focus-visible { outline: 3px solid var(--color-oro, #f2b705); outline-offset: 3px; }"
+    },
+    {
+      "name": "Botón fantasma",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Acciones secundarias; toma el color de la superficie.",
+      "html": "<div class=\"ds-felt\"><button class=\"ds-btn-ghost\">Cerrar la sala</button></div>",
+      "css": ".ds-felt { padding: 16px; background: var(--color-felt, #0f3d30); color: var(--color-chalk, #fdfaf2); } .ds-btn-ghost { min-height: 48px; padding: 0 16px; border-radius: 12px; font: 700 17px 'Atkinson Hyperlegible', system-ui, sans-serif; cursor: pointer; transition: background-color .15s, transform .15s; background: transparent; color: currentColor; border: 1.5px solid color-mix(in oklab, currentColor 60%, transparent); } .ds-btn-ghost:hover { background: color-mix(in oklab, currentColor 10%, transparent); } .ds-btn-ghost:focus-visible { outline: 3px solid var(--color-oro, #f2b705); outline-offset: 3px; }"
+    },
+    {
+      "name": "Campo de texto",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Hueco del tapete con borde de tiza; foco de oro.",
+      "html": "<div class=\"ds-felt\"><label class=\"ds-label\" for=\"ds-name\">Tu nombre</label><input id=\"ds-name\" class=\"ds-input\" placeholder=\"Ana\"></div>",
+      "css": ".ds-felt { padding: 16px; background: var(--color-felt, #0f3d30); color: var(--color-chalk, #fdfaf2); } .ds-label { display: block; margin-bottom: 6px; font: 700 14px 'Atkinson Hyperlegible', system-ui, sans-serif; color: #b9d6c8; } .ds-input { width: 260px; min-height: 48px; padding: 0 12px; border-radius: 12px; border: 1.5px solid #ffffff66; background: var(--color-well, #0a2f24); color: inherit; font: 400 17px 'Atkinson Hyperlegible', system-ui, sans-serif; caret-color: var(--color-oro, #f2b705); } .ds-input::placeholder { color: #8fb5a4; } .ds-input:focus-visible { outline: 3px solid var(--color-oro, #f2b705); outline-offset: 3px; }"
+    },
+    {
+      "name": "Naipe de respuesta",
+      "kind": "card",
+      "refersTo": "naipe",
+      "description": "Cada respuesta es un naipe del palo que le toca; se levanta al elegirlo.",
+      "html": "<button class=\"ds-naipe\" aria-pressed=\"false\"><span class=\"ds-by\">Cristina</span><span class=\"ds-txt\">El chimpancé</span></button>",
+      "css": ".ds-naipe { position: relative; display: block; width: 300px; padding: 12px 16px; border-radius: 12px; background: var(--color-naipe, #fbf8f1); color: var(--color-ink, #1f1a12); font-family: 'Atkinson Hyperlegible', system-ui, sans-serif; box-shadow: 0 8px 16px -8px #000d; border: 0; text-align: left; cursor: pointer; transition: translate .15s, rotate .15s, box-shadow .15s; } .ds-naipe::before { content: ''; position: absolute; inset: 5px; border: 1.5px solid var(--color-copas, #d7262e); border-radius: 7px; pointer-events: none; } .ds-naipe::after { content: ''; position: absolute; top: 3px; left: 28px; width: 9px; height: 6px; background: var(--color-naipe, #fbf8f1);  } .ds-naipe:hover { translate: 0 -2px; } .ds-naipe:focus-visible { outline: 3px solid var(--color-oro, #f2b705); outline-offset: 3px; } .ds-naipe[aria-pressed=true] { translate: 0 -4px; rotate: -1.2deg; box-shadow: 0 0 0 3px var(--color-oro, #f2b705), 0 16px 24px -10px #000; } .ds-by { display: block; font-size: 14px; font-weight: 700; color: #6d6453; } .ds-txt { display: block; margin-top: 4px; font-size: 18px; font-weight: 700; }"
+    },
+    {
+      "name": "Ficha del marcador",
+      "kind": "chip",
+      "refersTo": "score-chip",
+      "description": "Nombre y puntos; quien lee va en oro.",
+      "html": "<div class=\"ds-felt\"><span class=\"ds-chip ds-chip-reader\">Ana <b>3</b></span> <span class=\"ds-chip\">Beto <b>2</b></span></div>",
+      "css": ".ds-felt { padding: 16px; background: var(--color-felt, #0f3d30); color: var(--color-chalk, #fdfaf2); font: 400 15px 'Atkinson Hyperlegible', system-ui, sans-serif; } .ds-chip { display: inline-flex; gap: 6px; align-items: center; min-height: 32px; padding: 2px 12px; border-radius: 9999px; border: 1px solid #ffffff26; background: var(--color-well, #0a2f24); } .ds-chip-reader { background: var(--color-oro, #f2b705); border-color: var(--color-oro, #f2b705); color: var(--color-oro-ink, #251b00); font-weight: 700; }"
+    },
+    {
+      "name": "Código de sala",
+      "kind": "custom",
+      "refersTo": "code-card",
+      "description": "El código repartido en seis cartas pequeñas.",
+      "html": "<div class=\"ds-felt\"><span class=\"ds-mini ds-odd\">K</span><span class=\"ds-mini\">7</span><span class=\"ds-mini ds-odd\">Q</span><span class=\"ds-mini\">2</span><span class=\"ds-mini ds-odd\">M</span><span class=\"ds-mini\">X</span></div>",
+      "css": ".ds-felt { display: flex; gap: 6px; padding: 16px; background: var(--color-felt, #0f3d30); } .ds-mini { position: relative; display: grid; place-items: center; width: 40px; height: 56px; border-radius: 6px; background: var(--color-naipe, #fbf8f1); color: var(--color-ink, #1f1a12); font: 400 26px Ultra, Georgia, serif; box-shadow: 0 6px 10px -4px #000c; rotate: 2deg; } .ds-mini::after { content: ''; position: absolute; inset: 3px; border: 1px solid currentColor; border-radius: 4px; opacity: .6; } .ds-odd { color: var(--color-copas, #d7262e); rotate: -3deg; }"
+    },
+    {
+      "name": "Carta boca abajo",
+      "kind": "custom",
+      "description": "Reverso de la baraja: la carta secreta antes de tocarla.",
+      "html": "<button class=\"ds-back\"><span class=\"ds-pill\">Toca para ver tu carta</span></button>",
+      "css": ".ds-back { display: grid; place-items: center; width: 320px; min-height: 112px; border-radius: 12px; border: 5px solid var(--color-naipe, #fbf8f1); background: repeating-linear-gradient(45deg, var(--color-espadas, #1d4fa8) 0 5px, #e9eefb 5px 7px); box-shadow: 0 8px 14px -6px #000c; cursor: pointer; } .ds-back:focus-visible { outline: 3px solid var(--color-oro, #f2b705); outline-offset: 3px; } .ds-pill { padding: 8px 16px; border-radius: 9999px; background: var(--color-naipe, #fbf8f1); color: var(--color-ink, #1f1a12); font: 700 17px 'Atkinson Hyperlegible', system-ui, sans-serif; box-shadow: 0 4px 10px -4px #000c; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "La mesa de mus",
+    "overview": "Trola se juega como se juega a las cartas en un bar: hay una mesa, y lo que tienes en la mano o lo que juzgas es una carta. El móvil es el tapete verde, y encima solo hay naipes de la baraja española. Las respuestas, tu carta secreta, el código de la sala y las vueltas son naipes de color crema. Cada uno lleva el marco del color de su palo y las «pintas», unos cortes en el marco que dicen el palo como en la baraja de verdad. Todo lo demás es fieltro y tiza.\n\nEs un diseño oscuro porque se juega de noche, en casa o en un bar con poca luz. El contraste es alto y la letra es grande, porque juega gente de todas las edades. El oro es el único color de acción y marca siempre lo que toca hacer ahora. Lo único que se mueve es la carta secreta cuando se da la vuelta. El resto de estados cambian sin coreografía, porque el móvil se mira de un vistazo y se suelta.\n\nSe rechazan expresamente el party game morado con degradado, las tarjetas blancas flotantes y los botones de caramelo.",
+    "keyCharacteristics": [
+      "Tapete verde punteado de fondo; naipes crema encima, con marco y pintas del palo.",
+      "Un solo color de acción: el oro.",
+      "Ultra para rótulos, código y números; Atkinson Hyperlegible para todo lo que se lee.",
+      "El reverso de la baraja (rayas azules) para lo oculto y como marca.",
+      "Los colores de texto cambian solos según estén sobre el tapete o sobre un naipe."
+    ],
+    "rules": [
+      {
+        "name": "La regla del oro",
+        "body": "El oro marca solo lo que se hace ahora: un botón principal por pantalla, el lector y lo elegido. Si hay dos cosas doradas compitiendo, una de ellas sobra.",
+        "section": "colors"
+      },
+      {
+        "name": "La regla de las dos superficies",
+        "body": "El texto secundario, la trola y la verdad tienen dos valores, uno para el tapete y otro para el naipe. El naipe redefine las variables, así que el mismo componente se lee bien en los dos sitios (todos ≥5,4:1). No se ponen colores a mano dentro de un naipe.",
+        "section": "colors"
+      },
+      {
+        "name": "La regla de la carta secreta",
+        "body": "La carta secreta tiene el mismo aspecto para la verdad y para la trola: siempre es un naipe de espadas. El color no puede delatar el papel.",
+        "section": "colors"
+      },
+      {
+        "name": "La regla de un solo peso",
+        "body": "Ultra solo tiene peso 400 y la síntesis de negritas está desactivada, así que nunca se le pide un peso mayor. La jerarquía la dan el tamaño y el cambio de familia.",
+        "section": "typography"
+      }
+    ],
+    "dos": [
+      "**Do** pon todo lo que se tiene o se juzga en un naipe crema con el marco de su palo; lo demás va sobre el tapete, sin caja.",
+      "**Do** reserva el oro para la acción de ahora: un botón principal por pantalla.",
+      "**Do** usa Ultra solo a 20px o más, y Atkinson negrita para los números pequeños.",
+      "**Do** usa los colores que cambian según la superficie (secundario, trola, verdad) en lugar de poner colores a mano dentro de un naipe.",
+      "**Do** acompaña siempre el color de verdad o trola con texto (sello o frase), nunca el color solo.",
+      "**Do** respeta `prefers-reduced-motion`: el giro de la carta se apaga."
+    ],
+    "donts": [
+      "**Don't** vuelvas al morado con degradado, las tarjetas blancas flotantes ni los botones de caramelo.",
+      "**Don't** pintes la carta secreta de un color distinto para la verdad y para la trola.",
+      "**Don't** pidas a Ultra un peso distinto de 400 ni la uses para párrafos.",
+      "**Don't** imites el volumen con degradados (fichas esféricas, relieves): los amarracos y los naipes son planos e impresos.",
+      "**Don't** uses emoji como iconos: los iconos son de lucide, del mismo trazo."
+    ]
+  }
+}
