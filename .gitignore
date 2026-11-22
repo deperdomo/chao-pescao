@@ -6,3 +6,13 @@ dist
 .env
 worker-configuration.d.ts
 .vercel
+
+# Impeccable (installed locally for this project, not versioned): the skill, its home/cache and ephemeral output
+.claude/skills/impeccable/
+.impeccable/home/
+.impeccable/review/
+.impeccable/questions/
+.impeccable/mocks/
+.impeccable/*.png
+.impeccable/config.local.json
+.impeccable/hook.*.json
