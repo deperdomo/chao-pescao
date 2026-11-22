@@ -9,7 +9,8 @@ puede plantarse; si descarta la verdad, pierde los puntos de la ronda.
   de preguntas (`worker/questions.ts`, solo en el servidor para que no se pueda mirar la respuesta en la web).
 - `src/shared/game.ts`: las reglas. Check: `npm test`.
 
-Sin base de datos: la partida vive en el Durable Object de la sala.
+Sin base de datos: la partida vive en el Durable Object de la sala. Reglas completas, arquitectura y
+decisiones: [ARQUITECTURA.md](ARQUITECTURA.md).
 
 ## Desarrollo
 
