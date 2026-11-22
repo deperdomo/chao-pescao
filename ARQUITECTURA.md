@@ -55,6 +55,19 @@ Móvil (web en Vercel)  ──POST /api/rooms──▶  Worker (Cloudflare)  ─
 - **Sin base de datos**: la partida vive entera en el Durable Object. Si algún día hace falta (lista de salas
   abiertas, historial), está la instancia compartida bd-juegos del servidor de Oracle, como en Trazo.
 
+### Demo (`/demo`)
+
+`src/client/Demo.tsx` monta las pantallas reales con 5 jugadores simulados, sin servidor: la sala vive en
+memoria y pasa por las mismas funciones de `src/shared/game.ts`. Los bots escriben sus respuestas y, si no lees
+tú, cazan trolas (se plantan con 2 puntos). Pasar de ronda lo decides tú. El panel "Demo" permite:
+
+- **Ver como**: cambiar de jugador (anfitrión, lector, quien dice la verdad…).
+- **Ir a**: saltar a sala de espera, escribiendo, cazando, resultado, descartó la verdad o fin de partida.
+
+Usa un mazo propio de 5 preguntas para que la web siga sin llevar las respuestas del mazo real. Se descarga
+aparte, solo al abrir `/demo`. En Vercel la ruta la sirve el rewrite de `vercel.json`; en desarrollo, la
+config de assets del plugin de Cloudflare en `vite.config.ts`.
+
 ### Mensajes
 
 Del cliente al servidor (JSON por el WebSocket): `start`, `write {text}`, `skip`, `discard {id}`, `stop`,

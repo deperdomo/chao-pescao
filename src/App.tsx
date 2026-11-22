@@ -1,7 +1,12 @@
-import { Component, useEffect, useState, type ReactNode } from 'react';
+import { Component, lazy, Suspense, useEffect, useState, type ReactNode } from 'react';
 import Home from './client/Home';
 import RoomScreen from './client/RoomScreen';
 import { codeFromUrl, roomPath, store, type Session } from './client/session';
+import { Loading } from './client/ui';
+
+// /demo: las pantallas reales con jugadores simulados. Se descarga solo al abrirla.
+const Demo = lazy(() => import('./client/Demo'));
+const isDemo = location.pathname === '/demo';
 
 const TITLE = document.title;
 
@@ -39,8 +44,8 @@ export default function App() {
   const [code, setCode] = useState(codeFromUrl);
 
   useEffect(() => {
-    document.body.classList.toggle('in-room', !!session);
-    document.title = session ? `Sala ${session.code} · Trola` : TITLE;
+    document.body.classList.toggle('in-room', !!session || isDemo);
+    document.title = isDemo ? 'Demo · Trola' : session ? `Sala ${session.code} · Trola` : TITLE;
   }, [session]);
 
   useEffect(() => {
@@ -65,7 +70,11 @@ export default function App() {
 
   return (
     <ErrorBoundary>
-      {session ? (
+      {isDemo ? (
+        <Suspense fallback={<Loading text="Cargando la demo…" />}>
+          <Demo />
+        </Suspense>
+      ) : session ? (
         <RoomScreen key={session.code} session={session} onExit={exit} />
       ) : (
         <Home notice={notice} initialCode={code} onEnter={enter} />

@@ -19,7 +19,8 @@ npm install
 npm run dev          # web + servidor de salas en el mismo Vite
 ```
 
-Para probar con varias pestañas en el mismo navegador: `?dev=2`, `?dev=3`… dan otra identidad.
+Para probar el juego solo: `/demo` (jugadores simulados, sin servidor). Con jugadores de verdad
+en varias pestañas del mismo navegador: `?dev=2`, `?dev=3`… dan otra identidad.
 Con móviles en la misma wifi: `npm run dev -- --host` y abrir la IP que muestra Vite.
 
 ## Despliegue
