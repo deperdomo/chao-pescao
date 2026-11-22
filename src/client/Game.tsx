@@ -35,11 +35,15 @@ function Scores({ view }: { view: View }) {
 }
 
 /** Tu papel y la respuesta real. Oculta hasta que la tocas: que no la lea quien tiene el móvil al lado. Mismo color para verdad y trola. */
-function SecretCard({ view }: { view: View }) {
+function SecretCard({ view, onShow }: { view: View; onShow: () => void }) {
   const [shown, setShown] = useState(false);
   const truth = view.role === 'truth';
+  const toggle = () => {
+    if (!shown) onShow();
+    setShown(!shown);
+  };
   return (
-    <button className="bg-ink text-paper w-full rounded-2xl p-4 text-left" onClick={() => setShown(!shown)} aria-expanded={shown}>
+    <button className="bg-ink text-paper w-full rounded-2xl p-4 text-left" onClick={toggle} aria-expanded={shown}>
       {shown ? (
         <>
           <span className="flex items-center justify-between gap-2 text-sm font-semibold opacity-80">
@@ -47,7 +51,7 @@ function SecretCard({ view }: { view: View }) {
           </span>
           <span className="mt-1 block text-2xl font-black">{view.answer}</span>
           <span className="mt-3 block font-bold">
-            {truth ? 'Te toca decir la VERDAD: escríbela con tus palabras.' : 'Te toca inventar una TROLA que suene creíble.'}
+            {truth ? 'Te toca decir la VERDAD: ya la tienes escrita abajo; cámbiala si quieres.' : 'Te toca inventar una TROLA que suene creíble.'}
           </span>
         </>
       ) : (
@@ -96,7 +100,8 @@ function Writing({ view, send }: PhaseProps) {
         </div>
       ) : (
         <>
-          <SecretCard view={view} />
+          {/* A quien dice la verdad se le escribe la respuesta real al ver la carta; puede cambiarla antes de enviar. */}
+          <SecretCard view={view} onShow={() => view.role === 'truth' && !text && setText(view.answer ?? '')} />
           {view.mine && !editing ? (
             <div className="card">
               <p className="label">Tu respuesta</p>

@@ -4,7 +4,8 @@
 
 - De 3 a 15 jugadores, cada uno con su móvil. El anfitrión crea la sala y comparte el código o el enlace.
 - En cada ronda hay un **lector**, que lee en voz alta una pregunta rara sin saber la respuesta.
-- Los demás ven la respuesta real y una carta secreta: a uno le toca **verdad** (la escribe con sus palabras) y
+- Los demás ven la respuesta real y una carta secreta: a uno le toca **verdad** (al ver su carta se
+  le escribe la respuesta real en el campo y puede cambiarla antes de enviarla) y
   al resto **trola** (se inventan una respuesta creíble). La verdad le toca a alguien conectado si lo hay.
 - Cuando todos han escrito, aparecen todas las respuestas con el nombre de su autor.
 - El lector descarta respuestas de una en una:
