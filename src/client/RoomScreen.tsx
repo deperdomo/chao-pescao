@@ -40,7 +40,7 @@ export default function RoomScreen({ session, onExit }: Props) {
   return (
     <>
       {!room.online && (
-        <p className="bg-ink text-paper fixed inset-x-0 top-0 z-50 p-2 text-center text-sm font-semibold" role="status">
+        <p className="bg-naipe text-ink fixed inset-x-0 top-0 z-50 p-2 text-center text-sm font-bold" role="status">
           Sin conexión. Reconectando…
         </p>
       )}

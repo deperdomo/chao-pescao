@@ -151,7 +151,7 @@ export default function Demo() {
         <Game key={you} view={view} send={conn.send} />
       )}
       <Toast text={toast} />
-      <details className="bg-paper border-line fixed bottom-2 left-2 z-50 max-w-64 rounded-lg border text-sm shadow-lg">
+      <details className="bg-well fixed bottom-2 left-2 z-50 max-w-64 rounded-xl border border-white/20 text-sm shadow-[0_10px_20px_-8px_#000d]">
         <summary className="cursor-pointer px-3 py-2 font-bold select-none">Demo</summary>
         <div className="flex max-h-[70dvh] flex-col gap-2 overflow-y-auto p-3 pt-0">
           <label className="label" htmlFor="demo-me">

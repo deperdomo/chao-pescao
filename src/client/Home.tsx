@@ -58,19 +58,19 @@ export default function Home({ notice, initialCode, onEnter }: Props) {
   };
 
   return (
-    <main className="mx-auto flex max-w-md flex-col gap-4 px-4 py-6">
+    <main className="mx-auto flex max-w-md flex-col gap-6 px-4 pt-8 pb-6">
       {(notice || error) && (
-        <p className="border-lie bg-paper rounded-lg border-2 p-3 font-semibold" role="alert">
+        <p className="naipe copas font-bold" role="alert">
           {notice || error}
         </p>
       )}
       {initialCode && !notice && (
-        <p className="card" role="status">
+        <p className="naipe oros" role="status">
           Te han invitado a la sala <strong className="tracking-wider">{initialCode}</strong>. Escribe tu nombre y entra.
         </p>
       )}
 
-      <div className="card">
+      <div>
         <label className="label" htmlFor="name">
           Tu nombre
         </label>
@@ -90,7 +90,7 @@ export default function Home({ notice, initialCode, onEnter }: Props) {
           aria-describedby={nameError ? 'name-error' : undefined}
         />
         {nameError && (
-          <p id="name-error" className="text-lie mt-1 text-sm font-semibold" role="alert">
+          <p id="name-error" className="text-lie mt-1.5 text-sm font-bold" role="alert">
             {nameError}
           </p>
         )}
@@ -99,14 +99,14 @@ export default function Home({ notice, initialCode, onEnter }: Props) {
         </button>
       </div>
 
-      <form className="card" onSubmit={join} noValidate>
+      <form className="border-t border-white/15 pt-6" onSubmit={join} noValidate>
         <label className="label" htmlFor="code">
           ¿Tienes un código de sala?
         </label>
         <div className="flex gap-2">
           <input
             id="code"
-            className="input text-xl font-semibold tracking-[0.3em] uppercase tabular-nums"
+            className="input font-display text-xl tracking-[0.3em] uppercase"
             value={code}
             onChange={(e) => {
               setCode(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6));
@@ -122,7 +122,7 @@ export default function Home({ notice, initialCode, onEnter }: Props) {
           <button className="btn btn-primary shrink-0">Unirse</button>
         </div>
         {codeError && (
-          <p id="code-error" className="text-lie mt-1 text-sm font-semibold" role="alert">
+          <p id="code-error" className="text-lie mt-1.5 text-sm font-bold" role="alert">
             {codeError}
           </p>
         )}

@@ -8,7 +8,7 @@
       name="description"
       content="Party game online y gratis de 3 a 15 jugadores: uno lee una pregunta rara, los demás conocen la respuesta y todos menos uno se inventan una trola. ¿Sabrás cazarlas?"
     />
-    <meta name="theme-color" content="#c4b5fd" />
+    <meta name="theme-color" content="#0f3d30" />
     <link rel="icon" href="/icon.svg" type="image/svg+xml" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Trola" />
@@ -21,21 +21,19 @@
   </head>
   <body>
     <!-- Portada en HTML estático: visible sin esperar al JavaScript. Se oculta al entrar en una sala (body.in-room). -->
-    <header class="landing mx-auto max-w-md px-4 pt-10 text-center">
-      <svg class="mx-auto size-16" viewBox="0 0 64 64" aria-hidden="true">
-        <path d="M14 12h36a6 6 0 0 1 6 6v22a6 6 0 0 1-6 6H30l-10 9v-9h-6a6 6 0 0 1-6-6V18a6 6 0 0 1 6-6z" fill="#17122b" />
-        <path d="M26 23a6 6 0 1 1 8.5 5.5c-1.6.8-2.5 2-2.5 3.5v1" stroke="#c4b5fd" stroke-width="4" fill="none" stroke-linecap="round" />
-        <circle cx="32" cy="39.5" r="2.5" fill="#c4b5fd" />
-      </svg>
-      <h1 class="mt-2 text-5xl font-black tracking-tight">Trola</h1>
-      <p class="text-muted mt-3 text-lg">Una pregunta rara, una respuesta verdadera y un montón de trolas. ¿Sabrás cazarlas?</p>
+    <header class="landing mx-auto max-w-md px-4 pt-12 text-center">
+      <div class="flex items-center justify-center gap-4">
+        <span class="cardback h-[68px] w-[48px] -rotate-8" aria-hidden="true"></span>
+        <h1 class="font-display text-[64px] leading-none">Trola</h1>
+      </div>
+      <p class="text-muted mt-5 text-lg">Una pregunta rara, una respuesta verdadera y un montón de trolas. ¿Sabrás cazarlas?</p>
     </header>
 
     <div id="root"></div>
 
-    <section class="landing mx-auto max-w-md px-4 pt-4 pb-12" aria-labelledby="como-se-juega">
-      <h2 id="como-se-juega" class="text-xl font-bold">Cómo se juega</h2>
-      <ol class="text-muted mt-3 list-decimal space-y-2 pl-5">
+    <section class="landing mx-auto max-w-md px-4 pt-6 pb-12" aria-labelledby="como-se-juega">
+      <h2 id="como-se-juega" class="font-display text-2xl">Cómo se juega</h2>
+      <ol class="text-muted marker:text-oro [&_strong]:text-chalk mt-3 list-decimal space-y-2 pl-5 marker:font-bold">
         <li>Crea una sala y comparte el código: de 3 a 15 jugadores, cada uno con su móvil.</li>
         <li>En cada ronda, un jugador lee en voz alta una pregunta rara. Él no sabe la respuesta.</li>
         <li>Los demás sí la ven. A uno le toca escribir <strong>la verdad</strong>; a todos los demás, inventarse <strong>una trola</strong>.</li>
@@ -43,7 +41,7 @@
         <li>Puede plantarse cuando quiera… pero si descarta la verdad, pierde los puntos de la ronda.</li>
         <li>Cada jugador lee una, dos o tres veces (lo elige el anfitrión). Gana quien más puntos tenga al final.</li>
       </ol>
-      <h2 class="mt-8 text-xl font-bold">Qué necesitas</h2>
+      <h2 class="font-display mt-10 text-2xl">Qué necesitas</h2>
       <p class="text-muted mt-3">
         Solo el navegador: no hay que instalar nada ni registrarse. Se juega hablando, en la misma habitación o por llamada.
         Defender tu trola con cara de póquer es la mitad de la gracia.

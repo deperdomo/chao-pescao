@@ -13,16 +13,19 @@ export function Loading({ text }: { text: string }) {
 export function Toast({ text }: { text: string }) {
   return (
     <div className="pointer-events-none fixed inset-x-0 bottom-4 z-50 flex justify-center px-4" role="status" aria-live="polite">
-      {text && <p className="bg-ink text-paper rounded-lg px-4 py-3 text-sm font-semibold shadow-lg">{text}</p>}
+      {text && <p className="bg-naipe text-ink rounded-xl px-4 py-3 text-sm font-bold shadow-[0_10px_20px_-8px_#000d]">{text}</p>}
     </div>
   );
 }
+
+/** Palos de la baraja: cada naipe de una lista lleva el siguiente (clases de .naipe en index.css). */
+export const SUITS = ['oros', 'copas', 'espadas', 'bastos'];
 
 /** Sello de una respuesta: verdad o trola. */
 export function Stamp({ truth }: { truth: boolean }) {
   return (
     <span
-      className={`shrink-0 -rotate-3 rounded-md border-2 px-1.5 text-xs font-black tracking-wider uppercase ${
+      className={`font-display shrink-0 -rotate-6 rounded-md border-2 px-1.5 text-xs tracking-wider uppercase ${
         truth ? 'border-truth text-truth' : 'border-lie text-lie'
       }`}
     >

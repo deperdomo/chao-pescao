@@ -1,40 +1,64 @@
 @import 'tailwindcss';
 
-/* Identidad: lila de fiesta, tarjetas blancas y tinta casi negra. Rosa = trola, verde = verdad.
-   Una sola familia: Outfit (OFL, variable, autoalojada). */
+/* Identidad "Tapete": la mesa de mus de un bar. Fieltro verde de fondo, naipes de la baraja española encima
+   (marco del color del palo y sus pintas) y el oro como único color de acción.
+   Ultra (rótulos, código y números) y Atkinson Hyperlegible (todo lo que se lee), autoalojadas. */
 @font-face {
-  font-family: 'Outfit';
-  src: url('./fonts/outfit-latin.woff2') format('woff2');
-  font-weight: 100 900;
+  font-family: 'Ultra';
+  src: url('./fonts/ultra-400-latin.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Atkinson Hyperlegible';
+  src: url('./fonts/atkinson-hyperlegible-400-latin.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Atkinson Hyperlegible';
+  src: url('./fonts/atkinson-hyperlegible-700-latin.woff2') format('woff2');
+  font-weight: 700;
   font-display: swap;
 }
 
 @theme {
-  --color-desk: #c4b5fd; /* fondo: tinta 9.8:1, muted 6:1 */
-  --color-paper: #ffffff;
-  --color-ink: #17122b;
-  --color-muted: #4b4370; /* 9:1 sobre blanco */
-  --color-line: #17122b;
-  --color-soft: #e9e4f7;
-  --color-chip: #f1edff;
-  --color-hint: #6b6390; /* placeholders: 5.5:1 sobre blanco */
-  --color-lie: #c2255c; /* 5.6:1 sobre blanco */
-  --color-truth: #1b7f5a; /* 5:1 sobre blanco */
-  --font-sans: 'Outfit', system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  --color-felt: #0f3d30; /* tapete */
+  --color-well: #0a2f24; /* campos, fichas y huecos del tapete */
+  --color-naipe: #fbf8f1;
+  --color-chalk: #fdfaf2; /* texto sobre el tapete: 11.6:1 */
+  --color-ink: #1f1a12; /* texto sobre naipe: 16:1 */
+  --color-oro: #f2b705; /* la acción de ahora */
+  --color-oro-ink: #251b00; /* 9.3:1 sobre oro */
+  --color-copas: #d7262e;
+  --color-espadas: #1d4fa8;
+  --color-bastos: #2f8a3c;
+  /* Estos tres cambian dentro de un naipe (ver .naipe): todos ≥5.4:1 en los dos fondos. */
+  --color-muted: #b9d6c8;
+  --color-lie: #ff8f87;
+  --color-truth: #7fdc8e;
+  --font-sans: 'Atkinson Hyperlegible', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Ultra', Georgia, serif;
 }
 
 @layer base {
+  html {
+    color-scheme: dark;
+    scrollbar-color: #2b6b55 var(--color-well);
+  }
   body {
-    background: var(--color-desk);
-    color: var(--color-ink);
+    background: radial-gradient(#ffffff0b 1px, transparent 1.2px) 0 0 / 4px 4px, var(--color-felt);
+    color: var(--color-chalk);
     font-family: var(--font-sans);
+    font-size: 17px;
+    font-synthesis: none; /* Ultra solo tiene un peso: nada de negritas falsas */
     -webkit-tap-highlight-color: transparent;
-    caret-color: var(--color-ink);
-    accent-color: var(--color-ink);
+    caret-color: var(--color-oro);
+    accent-color: var(--color-oro);
   }
   ::selection {
-    background: var(--color-ink);
-    color: var(--color-desk);
+    background: var(--color-oro);
+    color: var(--color-oro-ink);
   }
   h1,
   h2 {
@@ -44,44 +68,150 @@
   li {
     text-wrap: pretty;
   }
+  a {
+    text-underline-offset: 3px;
+  }
   body.in-room .landing {
     display: none;
   }
   /* Reserva el alto del formulario de portada para que "Cómo se juega" no salte al cargar el JS. */
   body:not(.in-room) #root {
-    min-height: 330px;
+    min-height: 300px;
   }
   :focus-visible {
-    outline: 3px solid var(--color-ink);
-    outline-offset: 2px;
+    outline: 3px solid var(--color-oro);
+    outline-offset: 3px;
   }
 }
 
 @layer components {
   .btn {
-    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-xl px-4 text-base font-bold select-none;
-    @apply transition-[transform,background-color] duration-150 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-45;
+    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-xl px-4 text-[17px] font-bold select-none;
+    @apply transition-[transform,background-color,box-shadow] duration-150 active:scale-[0.98] disabled:cursor-not-allowed;
   }
-  /* Acción principal: negro con texto lila. */
+  /* Desactivado: un hueco del tapete, sin color. */
+  .btn:disabled {
+    @apply border-transparent bg-white/8 text-white/45 shadow-none;
+  }
+  /* Acción principal: oro. */
   .btn-accent {
-    @apply bg-ink text-desk enabled:hover:bg-ink/85;
+    @apply bg-oro text-oro-ink shadow-[0_8px_16px_-8px_#000c] enabled:hover:bg-[#ffc61f];
   }
+  /* Acción secundaria fuerte: un naipe. */
   .btn-primary {
-    @apply bg-ink text-paper enabled:hover:bg-ink/85;
+    @apply bg-naipe text-ink shadow-[0_8px_16px_-8px_#000c] enabled:hover:bg-white;
   }
+  /* Toma el color del sitio donde está: tiza sobre el tapete, tinta sobre un naipe. */
   .btn-ghost {
-    @apply border-line bg-paper text-ink border-[1.5px] enabled:hover:bg-chip;
+    @apply border-[1.5px] border-current/60 bg-transparent text-current enabled:hover:bg-current/10;
   }
   .input {
-    /* 16px: iOS no hace zoom al enfocar */
-    @apply border-line text-ink placeholder:text-hint min-h-12 w-full rounded-xl border-[1.5px] bg-white px-3 text-base;
-  }
-  .card {
-    @apply border-line bg-paper rounded-2xl border-[1.5px] p-4;
+    /* 16px o más: iOS no hace zoom al enfocar */
+    @apply bg-well min-h-12 w-full rounded-xl border-[1.5px] border-white/40 px-3 text-[17px] text-current placeholder:text-[#8fb5a4];
   }
   .label {
-    @apply text-muted mb-1 block text-sm font-semibold;
+    @apply text-muted mb-1.5 block text-sm font-bold;
   }
+
+  /* Un naipe: crema, con el marco del color de su palo. Las pintas (cortes del marco arriba a la izquierda)
+     dicen el palo como en la baraja: oros ninguna, copas una, espadas dos, bastos tres. */
+  .naipe {
+    --suit: var(--color-espadas);
+    --color-muted: #6d6453;
+    --color-lie: #c41f27;
+    --color-truth: #23752f;
+    @apply bg-naipe text-ink relative rounded-xl px-4 py-3 shadow-[0_8px_16px_-8px_#000d];
+    @apply transition-[translate,rotate,box-shadow,opacity] duration-150;
+  }
+  /* Elegido: se levanta de la mesa con el borde de oro. */
+  .naipe.picked {
+    translate: 0 -4px;
+    rotate: -1.2deg;
+    box-shadow:
+      0 0 0 3px var(--color-oro),
+      0 16px 24px -10px #000;
+  }
+  .naipe.won {
+    box-shadow:
+      0 0 0 3px var(--color-bastos),
+      0 8px 16px -8px #000d;
+  }
+  /* Cartas pequeñas del código de sala. */
+  .mini {
+    @apply bg-naipe text-ink font-display relative grid h-14 w-10 place-items-center rounded-md text-[26px] shadow-[0_6px_10px_-4px_#000c];
+  }
+  .mini::after {
+    content: '';
+    @apply absolute inset-[3px] rounded-[4px] border border-current opacity-60;
+  }
+  .naipe::before {
+    content: '';
+    @apply pointer-events-none absolute inset-[5px] rounded-[7px] border-[1.5px] border-(--suit);
+  }
+  .naipe::after {
+    content: '';
+    @apply bg-naipe absolute top-[3px] left-7 h-1.5 w-[9px];
+  }
+  .oros {
+    --suit: var(--color-oro);
+  }
+  .oros::after {
+    display: none;
+  }
+  .copas {
+    --suit: var(--color-copas);
+  }
+  .espadas {
+    --suit: var(--color-espadas);
+  }
+  .espadas::after {
+    box-shadow: 14px 0 0 var(--color-naipe);
+  }
+  .bastos {
+    --suit: var(--color-bastos);
+  }
+  .bastos::after {
+    box-shadow:
+      14px 0 0 var(--color-naipe),
+      28px 0 0 var(--color-naipe);
+  }
+
+  /* Reverso de la baraja: rayas azules con borde crema. */
+  .cardback,
+  .peek::before {
+    @apply border-naipe block rounded-xl border-[5px] bg-[repeating-linear-gradient(45deg,var(--color-espadas)_0_5px,#e9eefb_5px_7px)] shadow-[0_8px_14px_-6px_#000c];
+  }
+  /* El reverso asoma detrás de la carta secreta ya vista. */
+  .peek {
+    @apply relative isolate;
+  }
+  .peek::before {
+    content: '';
+    @apply absolute top-1 right-0 bottom-2 left-2.5 -z-10 rotate-3;
+  }
+
+  /* Pregunta: doble filete sobre el tapete. */
+  .frame {
+    @apply m-1 rounded-xl border-[1.5px] border-white/30 px-4 py-3.5 outline-[1.5px] outline-offset-4 outline-white/15;
+  }
+
+  /* Amarracos: los puntos de la ronda. */
+  .token {
+    @apply size-4 shrink-0 rounded-full border-[1.5px] border-dashed border-white/40;
+  }
+  .token.on {
+    @apply border-0 bg-[radial-gradient(circle_at_35%_30%,#fff1c2,#e2b54f_55%,#8f6a12)] shadow-[0_2px_3px_#0008];
+  }
+}
+
+/* Lo único que se mueve: la carta secreta se da la vuelta al tocarla. */
+@keyframes flip {
+  from {
+    transform: perspective(600px) rotateY(80deg);
+  }
+}
+.flip {
+  animation: flip 0.32s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @media (prefers-reduced-motion: reduce) {

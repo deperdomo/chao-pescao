@@ -1,8 +1,9 @@
 // Sala de espera: código para compartir y jugadores. Tras una partida, muestra la clasificación.
 import { useState } from 'react';
-import { Check, Crown, Share2, WifiOff, X } from 'lucide-react';
+import { Check, Crown, Share2, Trophy, WifiOff, X } from 'lucide-react';
 import { LAP_CHOICES, MAX_PLAYERS, MIN_PLAYERS, type View } from '../shared/game';
 import { store } from './session';
+import { SUITS } from './ui';
 import type { RoomConn } from './useRoom';
 
 interface Props {
@@ -38,38 +39,46 @@ export default function Lobby({ room, view, onLeave }: Props) {
   };
 
   return (
-    <main className="mx-auto flex min-h-dvh max-w-md flex-col gap-4 p-4">
-      <header className="card text-center">
-        <h1 className="text-muted text-sm font-semibold">Sala de espera · código</h1>
-        <p className="mt-1 text-5xl font-extrabold tracking-[0.15em] tabular-nums">{view.code}</p>
-        <button className="btn btn-ghost mt-3 w-full" onClick={share}>
+    <main className="mx-auto flex min-h-dvh max-w-md flex-col gap-6 p-4">
+      <header className="text-center">
+        <h1 className="text-muted text-sm font-bold">Sala de espera · código</h1>
+        {/* El código, repartido en seis cartas. */}
+        <p className="mt-3 flex justify-center gap-1.5">
+          <span className="sr-only">{view.code}</span>
+          {[...view.code].map((c, i) => (
+            <span key={i} className={`mini ${i % 2 ? 'rotate-2' : 'text-copas -rotate-3'}`} aria-hidden="true">
+              {c}
+            </span>
+          ))}
+        </p>
+        <button className="btn btn-ghost mt-5 w-full" onClick={share}>
           {copied ? <Check className="size-5" aria-hidden="true" /> : <Share2 className="size-5" aria-hidden="true" />}
           {copied ? 'Enlace copiado' : 'Invitar con un enlace'}
         </button>
       </header>
 
-      <section className="card" aria-labelledby="players-title">
+      <section aria-labelledby="players-title">
         <h2 id="players-title" className="label">
           {hasScores ? 'Clasificación de la última partida' : `Jugadores (${view.players.length}/${MAX_PLAYERS})`}
         </h2>
-        <ul className="divide-soft divide-y">
+        <ul className="divide-y divide-white/10">
           {players.map((p) => (
             <li key={p.id} className="flex min-h-12 items-center gap-3">
-              <span className="min-w-0 flex-1 truncate font-semibold">
+              <span className="min-w-0 flex-1 truncate font-bold">
                 {p.name}
                 {p.id === view.you && <span className="text-muted font-normal"> (tú)</span>}
               </span>
               {hasScores && (
-                <span className="tabular-nums">
-                  {p.score === best && '🏆 '}
-                  <strong>{p.score}</strong> <span className="text-muted text-sm">pts</span>
+                <span className="flex items-center gap-1.5 tabular-nums">
+                  {p.score === best && <Trophy className="text-oro size-5" aria-hidden="true" />}
+                  <strong className="font-display text-lg font-normal">{p.score}</strong> <span className="text-muted text-sm">pts</span>
                 </span>
               )}
               {!p.connected && <WifiOff className="text-muted size-4" aria-label="Desconectado" />}
-              {p.id === view.hostId && <Crown className="text-ink size-5" aria-label="Anfitrión" />}
+              {p.id === view.hostId && <Crown className="text-oro size-5" aria-label="Anfitrión" />}
               {isHost && p.id !== view.you && (
                 <button
-                  className="text-muted hover:bg-chip hover:text-ink grid size-11 place-items-center rounded-lg"
+                  className="text-muted hover:text-chalk grid size-11 place-items-center rounded-lg hover:bg-white/10"
                   onClick={() => room.send({ t: 'kick', id: p.id })}
                   aria-label={`Sacar a ${p.name} de la sala`}
                 >
@@ -81,21 +90,27 @@ export default function Lobby({ room, view, onLeave }: Props) {
         </ul>
       </section>
 
-      <footer className="mt-auto flex flex-col gap-2 pb-[max(0.5rem,env(safe-area-inset-bottom))]">
+      <footer className="mt-auto flex flex-col gap-3 pb-[max(0.5rem,env(safe-area-inset-bottom))]">
         {isHost ? (
           <>
-            <div className="card">
+            <div>
               <p id="laps-title" className="label">
                 Vueltas: cuántas veces lee cada jugador
               </p>
-              <div className="grid grid-cols-3 gap-2" role="radiogroup" aria-labelledby="laps-title">
-                {LAP_CHOICES.map((n) => (
-                  <button key={n} role="radio" aria-checked={laps === n} className={`btn ${laps === n ? 'btn-primary' : 'btn-ghost'}`} onClick={() => pickLaps(n)}>
+              <div className="mt-2 grid grid-cols-3 gap-3" role="radiogroup" aria-labelledby="laps-title">
+                {LAP_CHOICES.map((n, i) => (
+                  <button
+                    key={n}
+                    role="radio"
+                    aria-checked={laps === n}
+                    className={`naipe ${SUITS[i % 4]} font-display min-h-14 text-center text-2xl ${laps === n ? 'picked' : ''}`}
+                    onClick={() => pickLaps(n)}
+                  >
                     {n}
                   </button>
                 ))}
               </div>
-              <p className="text-muted mt-2 text-sm" role="status">
+              <p className="text-muted mt-3 text-sm" role="status">
                 Con {view.players.length} jugadores: {view.players.length * laps} rondas.
               </p>
             </div>

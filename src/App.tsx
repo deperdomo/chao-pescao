@@ -23,7 +23,7 @@ class ErrorBoundary extends Component<{ children: ReactNode }, { failed: boolean
     if (!this.state.failed) return this.props.children;
     return (
       <main className="mx-auto max-w-md p-6 text-center" role="alert">
-        <h1 className="text-xl font-bold">Algo ha fallado</h1>
+        <h1 className="font-display text-2xl">Algo ha fallado</h1>
         <p className="text-muted mt-2">Recarga la página: si estabas en una partida, volverás a tu sitio.</p>
         <button className="btn btn-primary mt-4" onClick={() => location.reload()}>
           Recargar
