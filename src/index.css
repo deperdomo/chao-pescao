@@ -1,0 +1,92 @@
+@import 'tailwindcss';
+
+/* Identidad: lila de fiesta, tarjetas blancas y tinta casi negra. Rosa = trola, verde = verdad.
+   Una sola familia: Outfit (OFL, variable, autoalojada). */
+@font-face {
+  font-family: 'Outfit';
+  src: url('./fonts/outfit-latin.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@theme {
+  --color-desk: #c4b5fd; /* fondo: tinta 9.8:1, muted 6:1 */
+  --color-paper: #ffffff;
+  --color-ink: #17122b;
+  --color-muted: #4b4370; /* 9:1 sobre blanco */
+  --color-line: #17122b;
+  --color-soft: #e9e4f7;
+  --color-chip: #f1edff;
+  --color-hint: #6b6390; /* placeholders: 5.5:1 sobre blanco */
+  --color-lie: #c2255c; /* 5.6:1 sobre blanco */
+  --color-truth: #1b7f5a; /* 5:1 sobre blanco */
+  --font-sans: 'Outfit', system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+}
+
+@layer base {
+  body {
+    background: var(--color-desk);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-tap-highlight-color: transparent;
+    caret-color: var(--color-ink);
+    accent-color: var(--color-ink);
+  }
+  ::selection {
+    background: var(--color-ink);
+    color: var(--color-desk);
+  }
+  h1,
+  h2 {
+    text-wrap: balance;
+  }
+  p,
+  li {
+    text-wrap: pretty;
+  }
+  body.in-room .landing {
+    display: none;
+  }
+  /* Reserva el alto del formulario de portada para que "Cómo se juega" no salte al cargar el JS. */
+  body:not(.in-room) #root {
+    min-height: 330px;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-ink);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-xl px-4 text-base font-bold select-none;
+    @apply transition-[transform,background-color] duration-150 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-45;
+  }
+  /* Acción principal: negro con texto lila. */
+  .btn-accent {
+    @apply bg-ink text-desk enabled:hover:bg-ink/85;
+  }
+  .btn-primary {
+    @apply bg-ink text-paper enabled:hover:bg-ink/85;
+  }
+  .btn-ghost {
+    @apply border-line bg-paper text-ink border-[1.5px] enabled:hover:bg-chip;
+  }
+  .input {
+    /* 16px: iOS no hace zoom al enfocar */
+    @apply border-line text-ink placeholder:text-hint min-h-12 w-full rounded-xl border-[1.5px] bg-white px-3 text-base;
+  }
+  .card {
+    @apply border-line bg-paper rounded-2xl border-[1.5px] p-4;
+  }
+  .label {
+    @apply text-muted mb-1 block text-sm font-semibold;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

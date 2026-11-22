@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // Solo el servidor de salas. La web está en Vercel.
+  "name": "trola",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-11-01",
+  "durable_objects": {
+    "bindings": [{ "name": "Room", "class_name": "Room" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Room"] }],
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [{ "pattern": "trola-api.deiviperdomo.dev", "custom_domain": true }]
+}
