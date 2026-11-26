@@ -1,7 +1,18 @@
-// Portada: crear sala o unirse con código. El título y el "cómo se juega" son HTML estático en index.html.
-import { useRef, useState, type FormEvent } from 'react';
-import { isValidName, NAME_MAX } from '../shared/game';
+// Portada: crear sala, unirse con código o pedir entrar en una sala abierta.
+// El título y el "cómo se juega" son HTML estático en index.html.
+import { useEffect, useRef, useState, type FormEvent } from 'react';
+import { ChevronRight, Users } from 'lucide-react';
+import { isValidName, MAX_PLAYERS, NAME_MAX } from '../shared/game';
 import { SERVER_HOST, store, token, type Session } from './session';
+import { SUITS } from './ui';
+
+const API = `${location.protocol}//${SERVER_HOST}/api/rooms`;
+
+interface OpenRoom {
+  code: string;
+  hostName: string;
+  playerCount: number;
+}
 
 interface Props {
   notice: string;
@@ -16,7 +27,28 @@ export default function Home({ notice, initialCode, onEnter }: Props) {
   const [codeError, setCodeError] = useState('');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+  const [rooms, setRooms] = useState<OpenRoom[] | null>(null);
   const nameInput = useRef<HTMLInputElement>(null);
+
+  // Salas abiertas: refresco cada 5 s mientras la pestaña está visible.
+  useEffect(() => {
+    let alive = true;
+    const load = async () => {
+      if (document.hidden) return;
+      try {
+        const res = await fetch(API);
+        if (res.ok && alive) setRooms(((await res.json()) as { rooms: OpenRoom[] }).rooms);
+      } catch {
+        // se reintenta en el siguiente ciclo
+      }
+    };
+    load();
+    const id = setInterval(load, 5000);
+    return () => {
+      alive = false;
+      clearInterval(id);
+    };
+  }, []);
 
   /** Nombre validado y recordado, o null (con el error a la vista y el foco en el campo). */
   const validName = (): string | null => {
@@ -35,14 +67,14 @@ export default function Home({ notice, initialCode, onEnter }: Props) {
     setBusy(true);
     setError('');
     try {
-      const res = await fetch(`${location.protocol}//${SERVER_HOST}/api/rooms`, {
+      const res = await fetch(API, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token: token(), name: player }),
       });
       const data = (await res.json()) as { code?: string; error?: string };
       if (!res.ok || !data.code) throw new Error(data.error);
-      onEnter({ code: data.code, name: player });
+      onEnter({ code: data.code, name: player, mode: 'join' });
     } catch (e) {
       setError((e instanceof Error && e.message) || 'No se pudo crear la sala. Inténtalo de nuevo.');
       setBusy(false);
@@ -54,7 +86,12 @@ export default function Home({ notice, initialCode, onEnter }: Props) {
     const player = validName();
     if (!player) return;
     if (!/^[A-Z0-9]{6}$/.test(code)) return setCodeError('El código tiene 6 letras o números');
-    onEnter({ code, name: player });
+    onEnter({ code, name: player, mode: 'join' });
+  };
+
+  const request = (room: OpenRoom) => {
+    const player = validName();
+    if (player) onEnter({ code: room.code, name: player, mode: 'request' });
   };
 
   return (
@@ -127,6 +164,35 @@ export default function Home({ notice, initialCode, onEnter }: Props) {
           </p>
         )}
       </form>
+
+      <section className="border-t border-white/15 pt-6" aria-labelledby="open-rooms">
+        <h2 id="open-rooms" className="label">
+          Salas abiertas
+        </h2>
+        {!rooms?.length ? (
+          <p className="text-muted text-sm">{rooms ? 'No hay salas abiertas ahora mismo.' : 'Buscando salas…'}</p>
+        ) : (
+          <ul className="mt-2 flex flex-col gap-3">
+            {rooms.map((room, i) => (
+              <li key={room.code}>
+                <button
+                  className={`naipe ${SUITS[i % 4]} flex w-full items-center gap-3 text-left disabled:cursor-not-allowed disabled:opacity-60`}
+                  onClick={() => request(room)}
+                  disabled={room.playerCount >= MAX_PLAYERS}
+                >
+                  <span className="min-w-0 flex-1 truncate font-bold">Sala de {room.hostName}</span>
+                  <span className="text-muted flex shrink-0 items-center gap-1 text-sm font-bold tabular-nums">
+                    <Users className="size-4" aria-hidden="true" />
+                    {room.playerCount}/{MAX_PLAYERS}
+                    <span className="sr-only"> jugadores. Pedir entrar</span>
+                    <ChevronRight className="size-5" aria-hidden="true" />
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
     </main>
   );
 }

@@ -1,9 +1,10 @@
 // Worker: API para crear salas y WebSocket de cada sala. La web (Vercel) está en otro dominio: CORS abierto.
 import { getServerByName, routePartykitRequest } from 'partyserver';
 import { isValidName } from '../src/shared/game';
+import { directory, Directory } from './directory';
 import { Room } from './room';
 
-export { Room };
+export { Directory, Room };
 
 const CODE = /^[A-Z0-9]{6}$/;
 const TOKEN = /^[\w-]{16,64}$/;
@@ -16,7 +17,7 @@ const randomCode = () =>
 // ponytail: CORS con *, sin cookies ni credenciales que proteger. Restringir al dominio de la web si se añaden.
 const CORS = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
@@ -44,6 +45,7 @@ export default {
     if (pathname === '/api/rooms') {
       if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS });
       if (request.method === 'POST') return createRoom(request, env);
+      if (request.method === 'GET') return json({ rooms: await directory(env).list() });
       return json({ error: 'Método no permitido' }, 405);
     }
     // /parties/room/<código>: solo códigos con formato válido llegan a crear un Durable Object.

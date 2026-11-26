@@ -129,7 +129,7 @@ export default function Demo() {
       if (error) setToast(error);
       refresh();
     };
-    return { view: null, online: true, toast, send };
+    return { view: null, pending: false, online: true, requests: [], toast, send, answer: () => {} };
   }, [room, me, toast]);
 
   const you = room.players.some((p) => p.id === me) ? me : room.hostId;

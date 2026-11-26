@@ -235,5 +235,8 @@ export function viewFor(room: Room, you: string): View {
 /** Mensajes del servidor al cliente. */
 export type ServerMsg =
   | { t: 'state'; s: View }
+  | { t: 'pending' } // solicitud de entrada enviada al anfitrión
+  | { t: 'request'; id: string; name: string } // (anfitrión) alguien pide entrar
+  | { t: 'requestGone'; id: string }
   | { t: 'toast'; msg: string }
   | { t: 'closed'; msg: string }; // fuera de la sala: no reconectar

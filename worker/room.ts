@@ -2,9 +2,11 @@
 // y envía a cada jugador solo lo que le corresponde ver.
 import { Server, type Connection, type ConnectionContext, type WSMessage } from 'partyserver';
 import * as G from '../src/shared/game';
+import { directory } from './directory';
 import { QUESTIONS } from './questions';
 
-type Conn = Connection<{ pid?: string } | null>;
+type ConnState = { pid?: string; pending?: { token: string; name: string } };
+type Conn = Connection<ConnState | null>;
 
 const TOKEN = /^[\w-]{16,64}$/;
 // Sala sin nadie conectado: margen para que el anfitrión salga a compartir el enlace, o para recargar a mitad de partida.
@@ -26,6 +28,8 @@ function send(conn: WebSocket, msg: G.ServerMsg) {
 // ponytail: sin hibernación, el estado vive en memoria mientras haya alguien conectado (y en storage por si reinicia).
 export class Room extends Server<Env> {
   private room: G.Room | null = null;
+  private listed = ''; // última fila enviada al directorio de salas abiertas
+  private dirQueue: Promise<unknown> = Promise.resolve();
 
   async onStart() {
     const saved = await this.ctx.storage.get<string>('room');
@@ -35,7 +39,7 @@ export class Room extends Server<Env> {
   }
 
   private conns(): Conn[] {
-    return [...this.getConnections<{ pid?: string } | null>()];
+    return [...this.getConnections<ConnState | null>()];
   }
 
   /** RPC desde el Worker (POST /api/rooms). Devuelve false si el código ya está en uso. */
@@ -60,6 +64,13 @@ export class Room extends Server<Env> {
 
     const error = G.canJoin(room, name);
     if (error) return this.expel(conn, error);
+    if (q.get('mode') === 'request') {
+      // Viene de la lista de salas abiertas: espera a que el anfitrión lo acepte.
+      conn.setState({ pending: { token, name } });
+      send(conn, { t: 'pending' });
+      this.toHost({ t: 'request', id: conn.id, name });
+      return;
+    }
     this.attach(conn, G.addPlayer(room, newId(), token, name).id);
   }
 
@@ -67,7 +78,27 @@ export class Room extends Server<Env> {
     conn.setState({ pid });
     this.ctx.waitUntil(this.ctx.storage.deleteAlarm());
     this.presence();
+    if (pid === this.room!.hostId) {
+      for (const c of this.conns()) if (c.state?.pending) send(conn, { t: 'request', id: c.id, name: c.state.pending.name });
+    }
     this.changed();
+  }
+
+  private toHost(msg: G.ServerMsg) {
+    for (const c of this.conns()) if (c.state?.pid === this.room?.hostId) send(c, msg);
+  }
+
+  /** El anfitrión responde a una solicitud de entrada. */
+  private answer(by: string, connId: unknown, ok: boolean) {
+    const room = this.room!;
+    if (by !== room.hostId || typeof connId !== 'string') return;
+    const conn = this.getConnection<ConnState | null>(connId);
+    const pending = conn?.state?.pending;
+    if (!conn || !pending) return;
+    const host = room.players.find((p) => p.id === room.hostId);
+    const error = ok ? G.canJoin(room, pending.name) : `${host?.name ?? 'El anfitrión'} ha rechazado tu solicitud`;
+    if (error) return this.expel(conn, error);
+    this.attach(conn, G.addPlayer(room, newId(), pending.token, pending.name).id);
   }
 
   /** Saca a una conexión de la sala con un motivo; el cliente no reconecta. */
@@ -82,11 +113,29 @@ export class Room extends Server<Env> {
     for (const p of this.room!.players) p.connected = online.has(p.id);
   }
 
-  /** Tras cualquier cambio: snapshot en storage y vista personalizada a cada jugador. */
+  /** Tras cualquier cambio: snapshot en storage, vista personalizada a cada jugador y aviso al directorio. */
   private changed() {
     const room = this.room!;
     this.ctx.waitUntil(this.ctx.storage.put('room', JSON.stringify(room)));
     for (const c of this.conns()) if (c.state?.pid) send(c, { t: 'state', s: G.viewFor(room, c.state.pid) });
+    this.list();
+  }
+
+  /** Mantiene la sala en la lista de salas abiertas mientras está en espera. Solo avisa si algo ha cambiado. */
+  private list() {
+    const room = this.room;
+    const row =
+      room?.phase === 'lobby'
+        ? { code: room.code, hostName: room.players.find((p) => p.id === room.hostId)?.name ?? '', playerCount: room.players.length }
+        : null;
+    const key = JSON.stringify(row);
+    if (key === this.listed) return;
+    this.listed = key;
+    // En cola: los avisos llegan en orden. Un fallo solo afecta a la lista, no a la partida.
+    this.dirQueue = this.dirQueue
+      .then(() => directory(this.env).set(this.name, row))
+      .catch((e) => console.warn(`directory ${this.name}: ${e}`));
+    this.ctx.waitUntil(this.dirQueue);
   }
 
   onMessage(conn: Conn, raw: WSMessage) {
@@ -101,6 +150,7 @@ export class Room extends Server<Env> {
     }
     if (!m || typeof m !== 'object') return;
 
+    const before = room.phase;
     let error: string | undefined;
     switch (m.t) {
       case 'start':
@@ -128,10 +178,15 @@ export class Room extends Server<Env> {
         return this.remove(pid, m.id);
       case 'leave':
         return this.remove(pid, pid);
+      case 'answer':
+        return this.answer(pid, m.id, m.ok === true);
       default:
         return;
     }
     if (error) return send(conn, { t: 'toast', msg: error });
+    if (before === 'lobby' && room.phase !== 'lobby') {
+      for (const c of this.conns()) if (c.state?.pending) this.expel(c, 'La partida ya ha empezado');
+    }
     this.changed();
   }
 
@@ -150,6 +205,7 @@ export class Room extends Server<Env> {
   onClose(conn: Conn) {
     const room = this.room;
     if (!room || !conn.state) return;
+    if (conn.state.pending) return this.toHost({ t: 'requestGone', id: conn.id });
     this.presence(conn.id);
     this.changed();
     if (!room.players.some((p) => p.connected)) {
@@ -168,6 +224,7 @@ export class Room extends Server<Env> {
   private async closeRoom(msg: string) {
     this.room = null; // antes de expulsar: onClose ya no hace nada
     for (const c of this.conns()) this.expel(c, msg);
+    this.list();
     await this.ctx.storage.delete('room');
     await this.ctx.storage.deleteAlarm();
   }

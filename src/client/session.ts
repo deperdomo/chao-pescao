@@ -3,6 +3,8 @@
 export interface Session {
   code: string;
   name: string;
+  /** join: entrada directa por código o enlace. request: desde la lista de salas, pide permiso al anfitrión. */
+  mode: 'join' | 'request';
 }
 
 /** Servidor de salas. En desarrollo va dentro de Vite (mismo host); en producción, ver .env.production. */

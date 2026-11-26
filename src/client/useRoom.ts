@@ -4,16 +4,26 @@ import PartySocket from 'partysocket';
 import type { ServerMsg, View } from '../shared/game';
 import { SERVER_HOST, token, type Session } from './session';
 
+export interface JoinRequest {
+  id: string;
+  name: string;
+}
+
 export interface RoomConn {
   view: View | null;
+  pending: boolean; // esperando a que el anfitrión acepte la solicitud
   online: boolean;
+  requests: JoinRequest[];
   toast: string;
   send: (msg: object) => void;
+  answer: (id: string, ok: boolean) => void;
 }
 
 export function useRoom(session: Session, onExit: (msg: string, wasInside: boolean) => void): RoomConn {
   const [view, setView] = useState<View | null>(null);
+  const [pending, setPending] = useState(false);
   const [online, setOnline] = useState(false);
+  const [requests, setRequests] = useState<JoinRequest[]>([]);
   const [toast, setToast] = useState('');
   const socketRef = useRef<PartySocket | null>(null);
   const exit = useRef(onExit);
@@ -25,25 +35,43 @@ export function useRoom(session: Session, onExit: (msg: string, wasInside: boole
       host: SERVER_HOST,
       party: 'room',
       room: session.code,
-      query: { token: token(), name: session.name },
+      query: { token: token(), name: session.name, mode: session.mode },
     });
     socketRef.current = socket;
-    socket.addEventListener('open', () => setOnline(true));
+    socket.addEventListener('open', () => {
+      setOnline(true);
+      setRequests([]); // el servidor reenvía las solicitudes pendientes al reconectar
+    });
     socket.addEventListener('close', () => setOnline(false));
     socket.addEventListener('message', (e) => {
       const m = JSON.parse(e.data as string) as ServerMsg;
-      if (m.t === 'state') {
-        inside = true;
-        setView(m.s);
-      } else if (m.t === 'toast') {
-        setToast(m.msg);
-      } else if (m.t === 'closed') {
-        socket.close(); // no reconectar
-        exit.current(m.msg, inside);
+      switch (m.t) {
+        case 'state':
+          inside = true;
+          setPending(false);
+          setView(m.s);
+          break;
+        case 'pending':
+          setPending(true);
+          break;
+        case 'request':
+          setRequests((list) => [...list.filter((r) => r.id !== m.id), { id: m.id, name: m.name }]);
+          navigator.vibrate?.(200);
+          break;
+        case 'requestGone':
+          setRequests((list) => list.filter((r) => r.id !== m.id));
+          break;
+        case 'toast':
+          setToast(m.msg);
+          break;
+        case 'closed':
+          socket.close(); // no reconectar
+          exit.current(m.msg, inside);
+          break;
       }
     });
     return () => socket.close();
-  }, [session.code, session.name]);
+  }, [session.code, session.name, session.mode]);
 
   useEffect(() => {
     if (!toast) return;
@@ -52,5 +80,12 @@ export function useRoom(session: Session, onExit: (msg: string, wasInside: boole
   }, [toast]);
 
   const send = useCallback((msg: object) => socketRef.current?.send(JSON.stringify(msg)), []);
-  return { view, online, toast, send };
+  const answer = useCallback(
+    (id: string, ok: boolean) => {
+      setRequests((list) => list.filter((r) => r.id !== id));
+      send({ t: 'answer', id, ok });
+    },
+    [send],
+  );
+  return { view, pending, online, requests, toast, send, answer };
 }

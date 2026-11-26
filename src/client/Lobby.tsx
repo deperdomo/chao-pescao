@@ -1,4 +1,4 @@
-// Sala de espera: código para compartir y jugadores. Tras una partida, muestra la clasificación.
+// Sala de espera: código para compartir, solicitudes de entrada y jugadores. Tras una partida, muestra la clasificación.
 import { useState } from 'react';
 import { Check, Crown, Share2, Trophy, WifiOff, X } from 'lucide-react';
 import { LAP_CHOICES, MAX_PLAYERS, MIN_PLAYERS, type View } from '../shared/game';
@@ -56,6 +56,21 @@ export default function Lobby({ room, view, onLeave }: Props) {
           {copied ? 'Enlace copiado' : 'Invitar con un enlace'}
         </button>
       </header>
+
+      {isHost &&
+        room.requests.map((req, i) => (
+          <div key={req.id} className={`naipe ${SUITS[i % 4]} flex items-center gap-2`} role="alert">
+            <p className="min-w-0 flex-1">
+              <strong className="break-words">{req.name}</strong> quiere entrar
+            </p>
+            <button className="btn btn-accent" onClick={() => room.answer(req.id, true)}>
+              Aceptar
+            </button>
+            <button className="btn btn-ghost px-3" onClick={() => room.answer(req.id, false)} aria-label={`Rechazar a ${req.name}`}>
+              <X className="size-5" aria-hidden="true" />
+            </button>
+          </div>
+        ))}
 
       <section aria-labelledby="players-title">
         <h2 id="players-title" className="label">

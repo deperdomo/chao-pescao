@@ -6,6 +6,8 @@ import type { Session } from './session';
 import { Loading, Toast } from './ui';
 import { useRoom } from './useRoom';
 
+const REQUEST_TIMEOUT = 60_000; // lo que se espera al anfitrión antes de desistir
+
 interface Props {
   session: Session;
   onExit: (msg: string, wasInside: boolean) => void;
@@ -13,7 +15,13 @@ interface Props {
 
 export default function RoomScreen({ session, onExit }: Props) {
   const room = useRoom(session, onExit);
-  const { view } = room;
+  const { view, pending } = room;
+
+  useEffect(() => {
+    if (!pending) return;
+    const id = setTimeout(() => onExit('El anfitrión no ha respondido. Inténtalo de nuevo.', false), REQUEST_TIMEOUT);
+    return () => clearTimeout(id);
+  }, [pending, onExit]);
 
   // La pantalla no se apaga mientras esperas (donde el navegador lo permita).
   useEffect(() => {
@@ -30,6 +38,16 @@ export default function RoomScreen({ session, onExit }: Props) {
     };
   }, [!!view]);
 
+  if (pending) {
+    return (
+      <main className="mx-auto flex min-h-dvh max-w-md flex-col justify-center gap-4 p-6 text-center">
+        <Loading text="Esperando a que el anfitrión te acepte…" />
+        <button className="btn btn-ghost" onClick={() => onExit('', false)}>
+          Cancelar
+        </button>
+      </main>
+    );
+  }
   if (!view) return <Loading text="Conectando con la sala…" />;
 
   const leave = () => {

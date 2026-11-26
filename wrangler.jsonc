@@ -5,9 +5,16 @@
   "main": "worker/index.ts",
   "compatibility_date": "2026-11-01",
   "durable_objects": {
-    "bindings": [{ "name": "Room", "class_name": "Room" }]
+    "bindings": [
+      { "name": "Room", "class_name": "Room" },
+      // Lista de salas abiertas (worker/directory.ts).
+      { "name": "Directory", "class_name": "Directory" }
+    ]
   },
-  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Room"] }],
+  "migrations": [
+    { "tag": "v1", "new_sqlite_classes": ["Room"] },
+    { "tag": "v2", "new_sqlite_classes": ["Directory"] }
+  ],
   "workers_dev": false,
   "preview_urls": false,
   "routes": [{ "pattern": "trola-api.deiviperdomo.dev", "custom_domain": true }]

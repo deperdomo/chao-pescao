@@ -38,7 +38,7 @@ export default function App() {
   const [session, setSession] = useState<Session | null>(() => {
     const code = codeFromUrl();
     const name = store.get('name');
-    return code && name ? { code, name } : null;
+    return code && name ? { code, name, mode: 'join' } : null;
   });
   const [notice, setNotice] = useState('');
   const [code, setCode] = useState(codeFromUrl);
