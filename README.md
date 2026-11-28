@@ -8,6 +8,8 @@ puede plantarse; si descarta la verdad, pierde los puntos de la ronda.
 - `worker/`: el servidor de salas (Cloudflare Worker + Durable Objects con partyserver, como Trazo) y el mazo
   de preguntas (`worker/questions.ts`, solo en el servidor para que no se pueda mirar la respuesta en la web).
 - `src/shared/game.ts`: las reglas. Check: `npm test`.
+- `video/`: el vídeo tutorial de la portada (HyperFrames + música sintetizada en `sound.mjs`).
+  `cd video && npm run render` lo genera y deja `public/tutorial.mp4` y `public/tutorial-poster.jpg`.
 
 Sin base de datos: la partida vive en el Durable Object de la sala. Reglas completas, arquitectura y
 decisiones: [ARQUITECTURA.md](ARQUITECTURA.md).
