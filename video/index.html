@@ -110,6 +110,7 @@
         padding: 60px 70px 90px;
       }
       .wipe {
+        background: repeating-linear-gradient(45deg, var(--espadas) 0 45px, #e9eefb 45px 63px);
         position: absolute;
         left: -320px;
         top: -520px;
@@ -193,39 +194,6 @@
         box-shadow:
           inset 0 0 0 5px #d9a204,
           0 8px 14px -6px #000a;
-      }
-      .minicard {
-        background: var(--naipe);
-        border-radius: 10px;
-        box-shadow: 0 8px 14px -6px #000a;
-      }
-      .minicard::before {
-        content: '';
-        position: absolute;
-        inset: 5px;
-        border: 3px solid var(--suit);
-        border-radius: 6px;
-      }
-      .bit,
-      .amb {
-        position: absolute;
-        z-index: 25;
-      }
-      .bit.coin,
-      .amb.coin {
-        width: 56px;
-        height: 56px;
-        margin: -28px;
-      }
-      .bit.minicard,
-      .amb.minicard {
-        width: 60px;
-        height: 84px;
-        margin: -42px -30px;
-      }
-      .amb {
-        z-index: 1;
-        opacity: 0.16;
       }
       .seal {
         display: inline-block;
@@ -705,7 +673,6 @@
     <!-- data-duration = T.end (timing.js) -->
     <div id="root" data-composition-id="main" data-start="0" data-duration="42" data-width="1080" data-height="1920">
       <div id="felt" data-layout-ignore></div>
-      <div id="ambient" data-layout-ignore></div>
 
       <section id="s0" class="clip scene" data-start="0" data-duration="4" data-track-index="0">
         <div class="mid">
@@ -877,15 +844,6 @@
         '<svg class="crown" viewBox="0 0 140 118"><path d="M14 104 6 30l36 30 28-48 28 48 36-30-8 74z" fill="#f2b705" stroke="#251b00" stroke-width="7" stroke-linejoin="round"/><circle cx="70" cy="80" r="9" fill="#d7262e"/></svg>',
       );
 
-      // Naipes y monedas que flotan despacio por el fondo, siempre en el mismo sitio.
-      for (let i = 0; i < 14; i++) {
-        const el = document.createElement('i');
-        el.className = i % 2 ? 'amb coin' : `amb minicard ${SUITS[(i >> 1) % 4]}`;
-        el.setAttribute('data-layout-ignore', '');
-        el.style.cssText = `left:${((i * 293) % 960) + 60}px;top:${((i * 587) % 1760) + 140}px`;
-        $('#ambient').append(el);
-      }
-
       // ── Animación ─────────────────────────────────────────────────────────
       const tl = gsap.timeline({ paused: true });
       const pop = (s, t, v = {}) => tl.from(s, { scale: 0, opacity: 0, duration: 0.5, ease: 'back.out(2.2)', ...v }, t);
@@ -894,44 +852,11 @@
         tl.to(s, { keyframes: { x: [0, -24 * k, 20 * k, -12 * k, 6 * k, 0], y: [0, 12 * k, -9 * k, 5 * k, -2 * k, 0] }, duration: 0.45, ease: 'none' }, t);
       const jolt = (s, t) => tl.to(s, { keyframes: { x: [0, -18, 14, -8, 4, 0] }, duration: 0.4, ease: 'none' }, t);
       const glint = (s, t) => tl.fromTo(s, { x: 0 }, { x: 900, duration: 0.7, ease: 'power2.inOut', immediateRender: false }, t);
-      /** Lluvia de naipes y monedas que sale disparada desde (cx, cy). */
-      const burst = (scene, t, cx, cy, n = 20) => {
-        for (let i = 0; i < n; i++) {
-          const bit = document.createElement('i');
-          bit.className = i % 3 === 0 ? 'bit coin' : `bit minicard ${SUITS[i % 4]}`;
-          bit.setAttribute('data-layout-ignore', '');
-          bit.style.cssText = `left:${cx}px;top:${cy}px`;
-          $(scene).append(bit);
-          const a = (i / n) * 6.283 + (i % 2) * 0.22;
-          const r = 340 + ((i * 97) % 320);
-          tl.fromTo(
-            bit,
-            { x: 0, y: 0, scale: 0, rotation: 0, opacity: 1 },
-            { x: Math.cos(a) * r, y: Math.sin(a) * r + 140, scale: 1, rotation: (i % 2 ? 1 : -1) * (180 + i * 23), duration: 0.9, ease: 'power3.out' },
-            t,
-          ).to(bit, { opacity: 0, duration: 0.35 }, t + 0.7);
-        }
-      };
 
-      // Fondo vivo: el fieltro se desliza y los naipes del fondo suben girando.
-      tl.to('#felt', { x: -96, y: -96, duration: T.end, ease: 'none' }, 0);
-      $$('.amb').forEach((el, i) =>
-        tl.fromTo(el, { y: 0, rotation: (i * 47) % 360 }, { y: -260 - (i % 4) * 90, rotation: `+=${i % 2 ? 140 : -140}`, duration: T.end, ease: 'none' }, 0),
-      );
-
-      // Cortinillas: un naipe gigante cruza la pantalla en cada corte. Luego, la cabecera del paso.
-      const WIPES = [
-        'repeating-linear-gradient(45deg, #1d4fa8 0 45px, #e9eefb 45px 63px)',
-        '#f2b705',
-        '#d7262e',
-        '#fbf8f1',
-        'repeating-linear-gradient(45deg, #1d4fa8 0 45px, #e9eefb 45px 63px)',
-        '#2f8a3c',
-      ];
+      // Cortinilla: el reverso de la baraja cruza la pantalla en cada corte. Luego, la cabecera del paso.
       T.cuts.forEach((cut, i) => {
         const wipe = document.createElement('div');
         wipe.className = 'wipe';
-        wipe.style.background = WIPES[i];
         root.append(wipe);
         const axis = i % 2 ? 'yPercent' : 'xPercent';
         tl.fromTo(wipe, { [axis]: 100 }, { [axis]: 0, duration: 0.3, ease: 'power3.in' }, cut - 0.3).to(
@@ -956,8 +881,7 @@
       );
       tl.from('#s0 h1 .ch', { y: -600, rotation: -25, opacity: 0, duration: 0.45, ease: 'back.out(1.6)', stagger: 0.07 }, T.slam - 0.55);
       tl.fromTo('#s0 .hero', { scale: 1.12 }, { scale: 1, duration: 0.5, ease: 'elastic.out(1, 0.4)', immediateRender: false }, T.slam);
-      shake('#s0', T.slam);
-      burst('#s0', T.slam, 540, 800, 24);
+      shake('#s0', T.slam, 0.6);
       glint('#s0 .glint', T.slam + 0.15);
       rise('#s0 .tag', T.tag);
       tl.from('#s0 .tag .o', { scale: 0, rotation: -12, duration: 0.45, ease: 'back.out(3)' }, T.tag + 0.6);
@@ -1024,7 +948,6 @@
           t + 0.6,
         );
         pop(coins[k], t + 0.3, { rotationY: 360, duration: 0.45 });
-        burst('#s4', t + 0.3, 789 + k * 92, 640, 10);
       });
       // La duda: la música se para y late el corazón.
       const truthCard = ans[1];
@@ -1041,7 +964,7 @@
       discard(truthCard, T.boom);
       tl.to($('.ring', truthCard), { opacity: 1, borderColor: '#23752f', duration: 0.1 }, T.boom + 0.36); // tras apagarlo discard()
       tl.fromTo('#flash', { opacity: 0.7 }, { opacity: 0, duration: 0.6, ease: 'power2.out', immediateRender: false }, T.boom);
-      shake('#s4', T.boom, 1.8);
+      shake('#s4', T.boom, 1.4);
       tl.to(coins.slice(0, 2), { y: 420, rotation: 200, opacity: 0, duration: 0.7, ease: 'power2.in', stagger: 0.08 }, T.boom + 0.1);
       tl.to('#dim', { opacity: 0, duration: 0.15 }, T.boom);
       tl.to('.verdict', { opacity: 1, duration: 0.3 }, T.boom + 0.55);
@@ -1058,7 +981,6 @@
       tl.from('.crown', { y: -400, rotation: -120, scale: 0, duration: 0.45, ease: 'back.out(2)' }, T.crown - 0.3);
       tl.to($('.ring', rows[0]), { opacity: 1, duration: 0.2 }, T.crown);
       tl.to(rows[0], { scale: 1.06, duration: 0.3, ease: 'back.out(3)' }, T.crown);
-      burst('#s5', T.crown, 200, 520, 16);
       rise('#s5 .cap', T.rankCap);
 
       // 6 · Cierre
@@ -1069,8 +991,7 @@
         T.cuts[5] + 0.1,
       );
       tl.from('#s6 h1 .ch', { y: 320, opacity: 0, duration: 0.4, ease: 'back.out(1.8)', stagger: 0.06 }, T.outroSlam - 0.55);
-      shake('#s6', T.outroSlam);
-      burst('#s6', T.outroSlam, 540, 640, 24);
+      shake('#s6', T.outroSlam, 0.6);
       glint('#s6 .glint', T.outroSlam + 0.1);
       rise('#s6 .cap', T.outroSlam + 0.2);
       pop('.cta', T.cta);
