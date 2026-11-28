@@ -795,10 +795,10 @@
       const PLAYERS = ['Ana', 'Bea', 'Carlos', 'Dani', 'Elena', 'Fran'];
       const SECRET = [['Bea', true], ['Carlos', false], ['Dani', false], ['Elena', false]];
       const ANSWERS = [
-        ['Para envolver huevos', 'Carlos', false],
-        ['Como papel pintado', 'Bea', true],
-        ['Como aislante de submarinos', 'Dani', false],
-        ['Para relajar a los astronautas', 'Elena', false],
+        ['El chimpancé', 'Carlos', false],
+        ['El koala', 'Bea', true],
+        ['El mapache', 'Dani', false],
+        ['El oso panda', 'Elena', false],
       ];
       const RANKING = [['Elena', 7], ['Bea', 5], ['Carlos', 4], ['Ana', 2]];
 
@@ -819,7 +819,7 @@
               <small>Tu papel</small>
               <b class="seal ${truth ? 't' : 'l'}">${truth ? 'Verdad' : 'Trola'}</b>
               <small>La respuesta</small>
-              <strong>Como papel pintado</strong>
+              <strong>El koala</strong>
             </div>
           </div>
           <span class="who">${who}</span>
@@ -867,7 +867,7 @@
         const scene = `#s${i + 1}`;
         if (!$(`${scene} header`)) return;
         const len = (T.cuts[i + 1] ?? T.end) - cut;
-        tl.from(`${scene} .badge`, { rotationY: 540, scale: 0, transformPerspective: 900, duration: 0.6, ease: 'back.out(1.6)' }, cut + 0.1);
+        rise(`${scene} .badge`, cut + 0.15); // sin giro: entra igual que el título
         rise(`${scene} h2`, cut + 0.25);
         tl.fromTo(`${scene} .body`, { scale: 0.97 }, { scale: 1.03, duration: len, ease: 'none' }, cut); // empuje de cámara
       });
@@ -889,9 +889,9 @@
       // 1 · Sala: se reparten las cartas del código y llegan los jugadores.
       rise('#s1 .lbl', 4.4);
       T.code.forEach((t, i) =>
-        tl.from($$('.mini')[i], { y: -900, rotation: i % 2 ? 50 : -50, opacity: 0, duration: 0.4, ease: 'back.out(1.4)' }, t),
+        tl.from($$('.mini')[i], { y: 50, opacity: 0, duration: 0.35, ease: 'power3.out' }, t), // en su sitio: no cruzan el título
       );
-      T.players.forEach((t, i) => pop($$('#friends .chip')[i], t, { rotation: -200 }));
+      T.players.forEach((t, i) => pop($$('#friends .chip')[i], t));
       rise('#s1 .cap', T.friendsCap);
       tl.to('.mini', { y: -18, duration: 0.2, ease: 'power2.out', stagger: { each: 0.08, yoyo: true, repeat: 1 } }, 8.6);
 

@@ -1,7 +1,7 @@
 // Tiempos (en segundos) compartidos por la animación (index.html) y la banda sonora (sound.mjs).
 // Rumba a 120 BPM: un pulso cada 0,5 s y un compás cada 2 s. Los cortes de escena caen en inicio de compás.
 const seq = (t, step, n) => Array.from({ length: n }, (_, i) => +(t + step * i).toFixed(3));
-const QUESTION = '¿Para qué se inventó el plástico de burbujas?'; // del mazo de la demo, no del real
+const QUESTION = '¿Qué animal tiene huellas dactilares casi idénticas a las humanas?'; // del mazo de la demo, no del real
 globalThis.T = {
   end: 42, // = data-duration de #root en index.html
   cuts: [4, 10, 16, 22, 34, 38],
@@ -16,8 +16,8 @@ globalThis.T = {
   // 2 · Pregunta
   reader: 10.5,
   question: QUESTION,
-  typing: seq(10.9, 0.045, [...QUESTION].length), // una tecla por letra
-  questionCap: 13,
+  typing: seq(10.9, 0.035, [...QUESTION].length), // una tecla por letra: termina a los 13,2 s
+  questionCap: 13.3,
   unknown: seq(13.75, 0.25, 3), // los "¿?" que caen sobre la pregunta
   // 3 · Cartas secretas
   deal: seq(16.5, 0.125, 4),
@@ -26,7 +26,7 @@ globalThis.T = {
   // 4 · Cazar trolas
   answers: seq(22.5, 0.25, 4),
   hunts: [24.5, 26.5], // dos trolas cazadas: +1, +2
-  doubt: 28, // elige "Como papel pintado": la música se corta y late el corazón
+  doubt: 28, // elige "El koala": la música se corta y late el corazón
   beats: [28.1, 28.9, 29.5],
   boom: 30, // ¡era la verdad!
   verdictCap: 30.9,
